@@ -6,6 +6,7 @@ use Illuminate\Foundation\Application;
 use Laravel\Socialite\Facades\Socialite;
 use App\Http\Controllers\SocialController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\KampanyeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,6 +36,10 @@ Route::get('auth/callback', [SocialController::class, 'googleCallback']);
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::resource('kampanye', KampanyeController::class)
+    ->only(['index', 'store'])
+    ->middleware(['auth', 'verified']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

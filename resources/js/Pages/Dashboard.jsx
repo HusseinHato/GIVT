@@ -12,11 +12,10 @@ export default function Dashboard(props) {
             <Head title="Dashboard" />
 
             <CardLink
-                href={route('hal.utama')}
+                href={route('kampanye.index')}
             >
-                Home
+                Buat Kampanye
             </CardLink>
-
 
         </AuthenticatedLayout>
     );

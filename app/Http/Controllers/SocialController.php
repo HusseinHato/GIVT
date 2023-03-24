@@ -21,7 +21,7 @@ class SocialController extends Controller
 
         $this->googleAuth($user);
 
-        return redirect()->intended(RouteServiceProvider::HOME);
+        return redirect()->route('hal.utama');
     }
 
     protected function googleAuth($incomingUser)

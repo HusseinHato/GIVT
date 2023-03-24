@@ -11,15 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('Kampanye', function (Blueprint $table) {
+        Schema::create('kampanyes', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
-            $table->date('tgl_mulai');
-            $table->date('tgl_berakhir');
+            $table->dateTime('tgl_mulai');
+            $table->datetime('tgl_berakhir');
             $table->integer('target');
-            $table->integer('dana_terkumpul');
-            $table->string('gambar');
+            $table->integer('dana_terkumpul')->default(0);
+            // $table->string('gambar');
             $table->string('judul');
+            $table->text('deskripsi');
+            $table->boolean('terverifikasi');
         });
     }
 

@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Kampanye;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class KampanyeController extends Controller
 {
@@ -14,7 +15,9 @@ class KampanyeController extends Controller
      */
     public function index(): Response
     {
-        //
+        return Inertia::render('Kampanye/Index', [
+            //
+        ]);
     }
 
     /**
@@ -30,7 +33,20 @@ class KampanyeController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        //
+        // dd($request);
+
+        $validated = $request->validate([
+            'deskripsi' => 'required',
+            'judul' => 'required|max:255',
+            'target' => 'required|integer',
+            'tgl_mulai' => 'required|date',
+            'tgl_berakhir' => 'required|date'
+        ]);
+
+        $request->user()->kampanyes()->create($validated);
+
+
+        return redirect(route('kampanye.index'));
     }
 
     /**
