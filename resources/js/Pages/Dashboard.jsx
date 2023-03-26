@@ -11,11 +11,19 @@ export default function Dashboard(props) {
         >
             <Head title="Dashboard" />
 
+            <div className="max-w-2xl mx-auto p-4 sm:p-6 lg:p-8">
             <CardLink
                 href={route('kampanye.index')}
             >
+                Lihat Kampanye
+            </CardLink>
+
+            <CardLink
+                href={route('kampanye.create')}
+            >
                 Buat Kampanye
             </CardLink>
+            </div>
 
         </AuthenticatedLayout>
     );

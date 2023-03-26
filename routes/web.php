@@ -38,7 +38,7 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::resource('kampanye', KampanyeController::class)
-    ->only(['index', 'store'])
+    ->only(['index', 'store', 'create'])
     ->middleware(['auth', 'verified']);
 
 Route::middleware('auth')->group(function () {

@@ -22,7 +22,7 @@ return new class extends Migration
             // $table->string('gambar');
             $table->string('judul');
             $table->text('deskripsi');
-            $table->boolean('terverifikasi');
+            $table->boolean('terverifikasi')->default(false);
         });
     }
 

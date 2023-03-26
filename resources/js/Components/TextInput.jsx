@@ -1,7 +1,7 @@
 import { forwardRef, useEffect, useRef } from 'react';
 
 export default forwardRef(function TextInput(
-    { type = 'text', name, id, value, className, autoComplete, required, isFocused, handleChange },
+    { type = 'text', name, id, value, className, autoComplete, required, isFocused, placeholder, handleChange },
     ref
 ) {
     const input = ref ? ref : useRef();
@@ -15,6 +15,7 @@ export default forwardRef(function TextInput(
     return (
         <div className="flex flex-col items-start">
             <input
+                placeholder={placeholder}
                 type={type}
                 name={name}
                 id={id}
