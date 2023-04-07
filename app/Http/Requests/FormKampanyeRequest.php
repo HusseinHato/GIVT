@@ -27,7 +27,8 @@ class FormKampanyeRequest extends FormRequest
             'judul' => 'required|max:255',
             'target' => 'required|integer|gt:0',
             'tgl_mulai' => 'required|date',
-            'tgl_berakhir' => 'required|integer|gt:0'
+            'tgl_berakhir' => 'required|integer|gt:0',
+            'gambar' => 'image|file|max:1024'
         ];
     }
 

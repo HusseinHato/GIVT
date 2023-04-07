@@ -9,18 +9,28 @@ import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { NumericFormat } from 'react-number-format';
+import { forwardRef } from 'react';
+import { FileUploader } from "react-drag-drop-files";
+
 // import { addDays } from 'date-fns';
 
 export default function Index({ auth }) {
 
+    const ButtonTglMulai = forwardRef(({ value, onClick }, ref) => (
+        <button type='button' className="inline-flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150" onClick={onClick} ref={ref}>
+          {value}
+        </button>
+    ));
+
     const [startDate] = useState(new Date());
 
-    const { data, setData, post, processing, reset, errors, transform } = useForm({
+    const { data, setData, post, processing, reset, errors, transform, progress } = useForm({
         deskripsi: '',
         judul: '',
         target: '',
         tgl_mulai: startDate,
-        tgl_berakhir: '1'
+        tgl_berakhir: '',
+        gambar: ''
     });
 
     console.log(data);
@@ -41,11 +51,11 @@ export default function Index({ auth }) {
         setData(event.target.name, event.target.type === 'checkbox' ? event.target.checked : event.target.value);
     };
 
-    const handleInputNumber = (event) => {
-        // let value = event.target.value.replace(/\D/g, '');
+    // const handleInputNumber = (event) => {
+    //     let value = event.target.value.replace(/\D/g, '');
 
-        setData(event.target.name, event.target.value);
-    }
+    //     setData(event.target.name, event.target.value);
+    // }
 
     return (
         <AuthenticatedLayout auth={auth}>
@@ -100,8 +110,8 @@ export default function Index({ auth }) {
                             onValueChange={(values) => {
                                 setData('target', values.value)
                             }}
-                            className="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-l-none rounded-md shadow-sm w-80"
-                            isFocused={true}
+                            className="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-l-none rounded-md shadow-sm"
+                            // isFocused={true}
                             autoComplete="off"
                             placeholder = "Target Dana ..."
                             />
@@ -115,14 +125,26 @@ export default function Index({ auth }) {
                         id="tgl_mulai"
                         selected={data.tgl_mulai}
                         minDate={new Date()}
-                        className='rounded max-w-sm w-96 mt-1'
+                        className='rounded max-w-sm w-full mt-1 '
                         autoComplete='off'
                         placeholderText="Pilih Tanggal"
                         startDate={data.tgl_mulai}
-                        selectsStart
-                        onChange={(date) => setData('tgl_mulai', date)} />
+                        customInput={<ButtonTglMulai />}
+                        onChange={(date) => setData('tgl_mulai', date)}
+                        popperModifiers={[
+                            {
+                              name: 'arrow',
+                              options: {
+                                padding: ({ popper, reference }) => ({
+                                  right: Math.min(popper.width, reference.width) - 24,
+                                }),
+                              },
+                            },
+                          ]} />
                     <InputError message={errors.tgl_mulai} className="mt-1" />
+                    </div>
 
+                    <div>
                     <InputLabel forInput="tgl_berkahir" value="Durasi Kampanye (Dalam Hari)" className="mt-4"/>
                     <NumericFormat
                             name="tgl_berakhir"
@@ -134,15 +156,33 @@ export default function Index({ auth }) {
                                 setData('tgl_berakhir', values.value)
                             }}
                             className="mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
-                            isFocused={true}
+                            // isFocused={true}
                             autoComplete="off"
                             placeholder = "Lama Kampanye ..."
                             isAllowed={(values) => {
-                                const { floatValue } = values;
-                                return floatValue < 1000;
+                                const { value } = values;
+                                return value < 1000;
                               }}
                             />
                     <InputError message={errors.tgl_berakhir} className="mt-1" />
+                    </div>
+
+                    <div>
+                        <FileUploader
+                        handleChange={(file) => {setData('gambar', file)}}
+                        name="file"
+                        types={["JPG", "PNG", "JPEG"]}
+                        hoverTitle=" "
+                        required
+                        >
+                            <div className='mt-4 bg-white grid place-content-center h-48 rounded-lg'>
+                                <div>
+                                    <p>{data.gambar ? `File ${data.gambar.name}` : `Unggah / Tarik File Kesini`}</p>
+                                </div>
+                            </div>
+                        </FileUploader>
+                        {data.gambar ? <button type='button' className='border border-white bg-slate-400' onClick={() => {reset("gambar")}}>Clear</button> : null}
+                        <InputError message={errors.gambar} className="mt-1" />
                     </div>
 
                     {/* jam berakhir kampanye sama dengan jam saat kampanye dibuat */}

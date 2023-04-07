@@ -16,6 +16,7 @@ export default function Kampanye({ kampanye }) {
                 <p className="mt-4 text-lg text-gray-900">Tgl Mulai : {new Date(kampanye.tgl_mulai).toLocaleString()}</p>
                 <p className="mt-4 text-lg text-gray-900">Tgl Berakhir : {new Date(kampanye.tgl_berakhir).toLocaleString()}</p>
                 <p className="mt-4 text-lg text-gray-900">Terverifikasi : {(kampanye.terverifikasi)? 'Sudah diverifikasi' : 'Belum terverifikasi'}</p>
+                <img src={"/storage/"+kampanye.gambar} alt="" srcset="" />
             </div>
         </div>
     );

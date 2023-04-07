@@ -21,6 +21,7 @@
     "dependencies": {
         "date-fns": "^2.29.3",
         "react-datepicker": "^4.10.0",
+        "react-drag-drop-files": "^2.3.9",
         "react-number-format": "^5.1.4"
     }
 }

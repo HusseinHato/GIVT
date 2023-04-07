@@ -53,6 +53,8 @@ class KampanyeController extends Controller
 
         $validated = $request->validated();
 
+        $validated['gambar'] = $request->file('gambar')->store('gambar-kampanye');
+
         // dd($validated);
 
         $tglTemp = Carbon::createFromFormat('Y-m-d H:i:s',  $validated['tgl_mulai']);;
