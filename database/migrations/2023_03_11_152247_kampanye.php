@@ -17,11 +17,11 @@ return new class extends Migration
             $table->timestamps();
             $table->dateTime('tgl_mulai');
             $table->datetime('tgl_berakhir');
-            $table->integer('target');
-            $table->integer('dana_terkumpul')->default(0);
+            $table->bigInteger('target');
+            $table->bigInteger('dana_terkumpul')->default(0);
             $table->string('gambar');
             $table->string('judul');
-            $table->text('deskripsi');
+            $table->mediumText('deskripsi');
             $table->boolean('terverifikasi')->default(false);
         });
     }

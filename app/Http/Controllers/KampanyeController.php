@@ -9,6 +9,7 @@ use Inertia\Inertia;
 use Inertia\Response;
 use Carbon\Carbon;
 use App\Http\Requests\FormKampanyeRequest;
+use Illuminate\Support\Facades\Auth;
 
 
 class KampanyeController extends Controller
@@ -18,9 +19,30 @@ class KampanyeController extends Controller
      */
     public function index(): Response
     {
+        $userId = Auth::id();
         return Inertia::render('Kampanye/IndexKampanye', [
-            //
-            'kampanyes' => Kampanye::with('user:id,name')->latest()->get(),
+
+            // 'kampanyes' => Kampanye::all()->map(function($kampanye) {
+            //     return [
+            //         'id' => $kampanye->id,
+            //         'judul' => $kampanye->judul,
+            //         'target' => $kampanye->target,
+            //         'terverifikasi' => $kampanye->terverifikasi,
+            //         'show_url' => route('kampanye.show', $kampanye),
+            //     ];
+            // }),
+
+            'kampanyes' => Kampanye::with('user:id')->get()->where('user_id', $userId)->map(function($kampanye) {
+                return [
+                    'user_id' => $kampanye->user_id,
+                    'id' => $kampanye->id,
+                    'judul' => $kampanye->judul,
+                    'target' => $kampanye->target,
+                    'terverifikasi' => $kampanye->terverifikasi,
+                    'show_url' => route('kampanye.show', $kampanye),
+                    'tgl_berkahir' => $kampanye->tgl_berakhir
+                ];
+            })
         ]);
     }
 
@@ -83,6 +105,10 @@ class KampanyeController extends Controller
     public function show(Kampanye $kampanye): Response
     {
         //
+        return Inertia::render('Kampanye/ShowKampanye', [
+            //
+            'kampanye' => $kampanye
+        ]);
     }
 
     /**
@@ -107,5 +133,12 @@ class KampanyeController extends Controller
     public function destroy(Kampanye $kampanye): RedirectResponse
     {
         //
+    }
+
+    public function upload(Request $request)
+    {
+        $fileName=$request->file('file')->getClientOriginalName();
+        $path=$request->file('file')->storeAs('uploads', $fileName, 'public');
+        return response()->json(['location'=>"/storage/$path"]);
     }
 }

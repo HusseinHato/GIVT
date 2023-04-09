@@ -3,28 +3,31 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import Kampanye from '@/Components/Kampanye';
 import { Head } from '@inertiajs/react';
 import CardLink from '@/Components/CardLink';
+import KampanyePreview from '@/Components/KampanyePreview';
 
 export default function Index({ auth, kampanyes }) {
+
+    console.log(kampanyes);
 
     return (
         <AuthenticatedLayout auth={auth}>
             <Head title="Kampanye" />
 
-                <div className="max-w-2xl mx-auto p-4 sm:p-6 lg:p-8">
+                <div className="max-w-6xl mx-auto p-4 sm:p-6 lg:p-8 grid grid-cols-1 gap-4 place-items-center">
+                    {(!kampanyes.length == 0) ? kampanyes.map(kampanye => {
+                        return <KampanyePreview key={kampanye.id} kampanye={kampanye} />
+                    }) : <p className='text-lg text-gray-200'>Belum Ada kampanye ...</p> }
+                    <div>
 
-                <div className="mt-6 bg-white shadow-sm rounded-lg divide-y mx-4">
-                    {kampanyes.map(kampanye =>
-                        <Kampanye key={kampanye.id} kampanye={kampanye} />
-                    )}
+                    <CardLink
+                    href={route('kampanye.create')}
+                    >
+                        Buat Kampanye
+                    </CardLink>
+
+                    </div>
                 </div>
 
-                <CardLink
-                href={route('kampanye.create')}
-                >
-                    Buat Kampanye
-                </CardLink>
-
-                </div>
 
         </AuthenticatedLayout>
     );
