@@ -80,7 +80,7 @@ export default function Index({ auth }) {
         <AuthenticatedLayout auth={auth}>
             <Head title="Kampanye" />
 
-            <div className="max-w-6xl mx-auto p-4 sm:p-6 lg:p-8">
+            <div className="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
                 <form onSubmit={submit}>
                     <div>
                         <InputLabel forInput="judul" value="Judul Kampanye" />
@@ -115,7 +115,7 @@ export default function Index({ auth }) {
                         <Editor
                             tinymceScriptSrc={'../tinymce/tinymce.min.js'}
                             onInit={(evt, editor) => editorRef.current = editor}
-                            initialValue={data.deskripsi}
+                            value={data.deskripsi}
                             onEditorChange={(newValue, editor) => setData('deskripsi', newValue)}
                             image_uploadtab= {true}
                             init={{
@@ -124,6 +124,7 @@ export default function Index({ auth }) {
                                       editor.save();
                                     });
                                   },
+                            content_css: 'default',
                             height: 800,
                             menubar: false,
                             plugins: [
@@ -133,7 +134,7 @@ export default function Index({ auth }) {
                             ],
                             toolbar: 'undo redo | blocks | ' +
                                 'bold italic forecolor | alignleft aligncenter ' +
-                                'alignright alignjustify | bullist numlist outdent indent | image | ' +
+                                ' alignjustify | bullist numlist outdent indent | image | ' +
                                 'removeformat | help',
                             content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
                             image_title: true,
@@ -141,10 +142,10 @@ export default function Index({ auth }) {
                             images_upload_url: '/upload',
                             file_picker_types: 'image',
                             file_picker_callback: handleFilePicker,
-                            // image_list: [
-                            //     {title: 'object-contain', value: 'object-contain'},
-                            //     {title: 'object-scale-down', value: 'object-scale-down'}
-                            // ]
+                            image_dimensions: false,
+                            image_class_list: [
+                                {title: 'Responsive', value: 'img-responsive'}
+                            ]
                             }}
                         />
                         <InputError message={errors.deskripsi} className="mt-1" />

@@ -39,13 +39,14 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::resource('kampanye', KampanyeController::class)
-    ->only(['index', 'store', 'create', 'show'])
+    ->only(['index', 'store', 'create'])
     ->middleware(['auth', 'verified']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::post('/upload', [KampanyeController::class, 'upload'])->name('uploadgambar');
+    Route::get('/kampanye/{kampanye:slug}', [KampanyeController::class, 'show'])->name('kampanye.show');
 });
 
 

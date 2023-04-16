@@ -7,8 +7,6 @@ import KampanyePreview from '@/Components/KampanyePreview';
 
 export default function Index({ auth, kampanyes }) {
 
-    console.log(kampanyes);
-
     return (
         <AuthenticatedLayout auth={auth}>
             <Head title="Kampanye" />

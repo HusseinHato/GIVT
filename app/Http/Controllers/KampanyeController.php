@@ -10,6 +10,7 @@ use Inertia\Response;
 use Carbon\Carbon;
 use App\Http\Requests\FormKampanyeRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 
 class KampanyeController extends Controller

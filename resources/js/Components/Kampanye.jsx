@@ -20,7 +20,7 @@ export default function Kampanye({ kampanye }) {
             <div className="flex-1">
                 <h1 className="text-6xl text-white">{kampanye.judul}</h1>
                 <p className="mt-4 text-lg text-white">Gambar Header :</p>
-                <img src={"/storage/"+kampanye.gambar} alt=""/>
+                <img src={"/storage/"+kampanye.gambar} alt="" className='w-100 h-96'/>
                 <p className="mt-4 text-lg text-white">Deskripsi : </p>
                 <div>
                     <Editor
@@ -32,7 +32,8 @@ export default function Kampanye({ kampanye }) {
                             statusbar: false,
                             menubar: false,
                             readonly: true,
-                            plugins: 'autoresize'
+                            plugins: 'autoresize',
+                            content_css: 'default'
                          }}
                     />
                 </div>
