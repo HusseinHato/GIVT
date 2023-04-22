@@ -6,7 +6,10 @@ use App\Models\Post;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Response;
+use Inertia\Inertia;
+use Inertia\Response;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Kampanye;
 
 class PostController extends Controller
 {
@@ -23,7 +26,22 @@ class PostController extends Controller
      */
     public function create(): Response
     {
+        $userId = Auth::id();
         //
+        return Inertia::render('Post/CreatePost', [
+            //
+            'kampanyes' => Kampanye::with('user:id')->get()->where('user_id', $userId)->map(function($kampanye) {
+                return [
+                    'user_id' => $kampanye->user_id,
+                    'id' => $kampanye->id,
+                    'judul' => $kampanye->judul,
+                    'target' => $kampanye->target,
+                    'terverifikasi' => $kampanye->terverifikasi,
+                    'show_url' => route('kampanye.show', $kampanye),
+                    'tgl_berkahir' => $kampanye->tgl_berakhir
+                ];
+            })
+        ]);
     }
 
     /**

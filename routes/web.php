@@ -6,6 +6,7 @@ use Illuminate\Foundation\Application;
 use Laravel\Socialite\Facades\Socialite;
 use App\Http\Controllers\SocialController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\KampanyeController;
 use Illuminate\Support\Facades\Auth;
 
@@ -42,11 +43,16 @@ Route::resource('kampanye', KampanyeController::class)
     ->only(['index', 'store', 'create'])
     ->middleware(['auth', 'verified']);
 
+Route::resource('post', PostController::class)
+    ->only(['index', 'store', 'create'])
+    ->middleware(['auth', 'verified']);
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::post('/upload', [KampanyeController::class, 'upload'])->name('uploadgambar');
     Route::get('/kampanye/{kampanye:slug}', [KampanyeController::class, 'show'])->name('kampanye.show');
+    Route::get('/post/{post:slug}', [PostController::class, 'show'])->name('post.show');
 });
 
 

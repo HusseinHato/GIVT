@@ -23,6 +23,18 @@ export default function Dashboard(props) {
             >
                 Buat Kampanye
             </CardLink>
+
+            <CardLink
+                href={route('post.index')}
+            >
+                Lihat Post
+            </CardLink>
+
+            <CardLink
+                href={route('post.create')}
+            >
+                Buat Post
+            </CardLink>
             </div>
 
         </AuthenticatedLayout>

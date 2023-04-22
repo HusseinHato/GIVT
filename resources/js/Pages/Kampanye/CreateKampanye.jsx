@@ -11,11 +11,9 @@ import "react-datepicker/dist/react-datepicker.css";
 import { NumericFormat } from 'react-number-format';
 import { FileUploader } from "react-drag-drop-files";
 import { Editor } from '@tinymce/tinymce-react';
-import { usePage } from '@inertiajs/react';
+import { useEffect } from 'react';
 
 export default function Index({ auth }) {
-
-    const { url } = usePage().props;
 
     const ButtonTglMulai = forwardRef(({ value, onClick }, ref) => (
         <button type='button' className="inline-flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150" onClick={onClick} ref={ref}>
@@ -76,6 +74,21 @@ export default function Index({ auth }) {
         input.click();
     };
 
+    const [preview, setPreview] = useState()
+
+    useEffect(() => {
+        if (!data.gambar) {
+            setPreview(undefined)
+            return
+        }
+
+        const objectUrl = URL.createObjectURL(data.gambar)
+        setPreview(objectUrl)
+
+        // free memory when ever this component is unmounted
+        return () => URL.revokeObjectURL(objectUrl)
+    }, [data.gambar]);
+
     return (
         <AuthenticatedLayout auth={auth}>
             <Head title="Kampanye" />
@@ -113,6 +126,7 @@ export default function Index({ auth }) {
                         ></textarea> */}
 
                         <Editor
+                            id='deskkampanye'
                             tinymceScriptSrc={'../tinymce/tinymce.min.js'}
                             onInit={(evt, editor) => editorRef.current = editor}
                             value={data.deskripsi}
@@ -239,6 +253,8 @@ export default function Index({ auth }) {
                         </FileUploader>
                         {data.gambar ? <button type='button' className='border border-white bg-slate-400' onClick={() => {reset("gambar")}}>Clear</button> : null}
                         <InputError message={errors.gambar} className="mt-1" />
+
+                        {data.gambar &&  <img src={preview} /> }
                     </div>
 
                     {/* jam berakhir kampanye sama dengan jam saat kampanye dibuat */}
