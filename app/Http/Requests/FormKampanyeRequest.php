@@ -24,11 +24,12 @@ class FormKampanyeRequest extends FormRequest
     {
         return [
             'deskripsi' => 'required',
-            'judul' => 'required|max:255|string|alpha',
+            'judul' => 'required|max:255|string|regex:/^[a-zA-Z0-9\s]+$/',
             'target' => 'required|integer|gt:0',
             'tgl_mulai' => 'required|date',
             'tgl_berakhir' => 'required|integer|gt:0',
-            'gambar' => 'required|image|file|max:1024'
+            'gambar' => 'required|image|file|max:1024',
+            'kategori' => 'required|string'
         ];
     }
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { HTMLAttributes, HTMLProps } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import InputError from '@/Components/InputError';
 import PrimaryButton from '@/Components/PrimaryButton';
@@ -9,29 +9,27 @@ import { useState, useRef } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import { FileUploader } from "react-drag-drop-files";
 import { Editor } from '@tinymce/tinymce-react';
-import { useEffect, Fragment } from 'react';
-import { Dialog, Transition } from '@headlessui/react'
-import {
-    Column,
-    ColumnDef,
-    flexRender,
-    getCoreRowModel,
-    getFilteredRowModel,
-    getPaginationRowModel,
-    Table,
-    useReactTable,
-  } from '@tanstack/react-table'
+import { useEffect, Fragment, useMemo, useCallback } from 'react';
+import TableBerita from '@/Components/TableBerita';
+import CardLink from '@/Components/CardLink';
+
+
 
 export default function Index({ auth, kampanyes }) {
+
+  // const [selectedRow, setSelectedRow] = React.useState(null);
+
+  // console.log(selectedRow);
+
     const { data, setData, post, processing, reset, errors, transform, progress } = useForm({
         body: '<p>Masukan Isi Berita.</p>',
         judul: '',
         gambar: '',
-        id_kampanye: ''
+        kampanye_id: ''
     });
 
     console.log(data);
-    console.log(kampanyes);
+    // console.log(kampanyes);
 
     const editorRef = useRef(null);
 
@@ -68,7 +66,7 @@ export default function Index({ auth, kampanyes }) {
         input.click();
     };
 
-    const [preview, setPreview] = useState()
+    const [preview, setPreview] = useState();
 
     useEffect(() => {
         if (!data.gambar) {
@@ -83,174 +81,169 @@ export default function Index({ auth, kampanyes }) {
         return () => URL.revokeObjectURL(objectUrl)
     }, [data.gambar]);
 
-    let [isOpen, setIsOpen] = useState(false);
+    const [judulKampanye, setJudulKampanye] = useState();
+
+    const gridRef = useRef();
+
+    const onSelectionChanged = useCallback(() => {
+        const selectedRows = gridRef.current.api.getSelectedRows();
+        if(selectedRows[0]){
+            setJudulKampanye(selectedRows[0].judul);
+        }
+    }, []);
+
+    const onRowClicked = (e) => {
+        const selectedRows = gridRef.current.api.getSelectedRows();
+        if(selectedRows[0]){
+            setData('kampanye_id', selectedRows[0].id);
+        }
+    }
+
+    const resetSelect = () => {
+        gridRef.current.api.deselectAll();
+        reset('kampanye_id');
+    }
 
     return (
         <AuthenticatedLayout auth={auth}>
             <Head title="Berita" />
 
             <div className="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
-                <form onSubmit={submit}>
-                    <div>
-                        <InputLabel forInput="judul" value="Judul Berita" />
-                        <TextInput
-                            placeholder = "Judul Berita ..."
-                            id="judul"
-                            name="judul"
-                            value={data.judul}
-                            className="mt-1 block w-full"
-                            autoComplete="off"
-                            isFocused={true}
-                            handleChange={onHandleChange}
-                        />
-                        <InputError message={errors.judul} className="mt-1" />
-                    </div>
-
-                    {/* Deskripsi Kampanye */}
-                    <div>
-                        <InputLabel
-                            forInput="isiberita"
-                            value="Isi Berita"
-                            className="mt-4"
-                        ></InputLabel>
-
-                        <Editor
-                            id='isiberita'
-                            tinymceScriptSrc={'../tinymce/tinymce.min.js'}
-                            onInit={(evt, editor) => editorRef.current = editor}
-                            value={data.body}
-                            onEditorChange={(newValue, editor) => setData('body', newValue)}
-                            image_uploadtab= {true}
-                            init={{
-                                setup: (editor) => {
-                                    editor.on('init change', () => {
-                                      editor.save();
-                                    });
-                                  },
-                            content_css: 'default',
-                            height: 800,
-                            menubar: false,
-                            plugins: [
-                                'advlist', 'autolink', 'lists', 'link', 'image', 'charmap',
-                                'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
-                                'insertdatetime', 'media', 'table', 'preview', 'help', 'wordcount', 'preview', 'visualblocks'
-                            ],
-                            toolbar: 'undo redo | blocks | ' +
-                                'bold italic forecolor | alignleft aligncenter ' +
-                                ' alignjustify | bullist numlist outdent indent | image | ' +
-                                'removeformat | help',
-                            content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
-                            image_title: true,
-                            automatic_uploads: true,
-                            images_upload_url: '/upload',
-                            file_picker_types: 'image',
-                            file_picker_callback: handleFilePicker,
-                            image_dimensions: false,
-                            image_class_list: [
-                                {title: 'Responsive', value: 'img-responsive'}
-                            ]
-                            }}
-                        />
-                        <InputError message={errors.body} className="mt-1" />
-                    </div>
-
-                    <div>
-                        <InputLabel
-                        forInput="gambar"
-                        value="Gambar Berita"
-                        className="mt-4"
-                        ></InputLabel>
-
-                        <FileUploader
-                        id='gambar'
-                        handleChange={(file) => {setData('gambar', file)}}
-                        name="file"
-                        types={["JPG", "PNG", "JPEG"]}
-                        hoverTitle=" "
-
-                        >
-                            <div className='bg-white grid place-content-center h-48 rounded-lg'>
-                                <div>
-                                    <p>{data.gambar ? `File ${data.gambar.name}` : `Unggah / Tarik File Kesini`}</p>
-                                </div>
+                {
+                    (!kampanyes.length==0) ?
+                    <>
+                        <form onSubmit={submit}>
+                            <div>
+                                <InputLabel forInput="judul" value="Judul Berita" />
+                                <TextInput
+                                    placeholder = "Judul Berita ..."
+                                    id="judul"
+                                    name="judul"
+                                    value={data.judul}
+                                    className="mt-1 block w-full"
+                                    autoComplete="off"
+                                    isFocused={true}
+                                    handleChange={onHandleChange}
+                                />
+                                <InputError message={errors.judul} className="mt-1" />
                             </div>
-                        </FileUploader>
-                        {data.gambar ? <button type='button' className='border border-white bg-slate-400' onClick={() => {reset("gambar")}}>Clear</button> : null}
-                        <InputError message={errors.gambar} className="mt-1" />
 
-                        {data.gambar &&  <img src={preview} /> }
-                    </div>
+                            {/* Deskripsi Kampanye */}
+                            <div>
+                                <InputLabel
+                                    forInput="isiberita"
+                                    value="Isi Berita"
+                                    className="mt-4"
+                                ></InputLabel>
 
-                    <div>
-                    <InputLabel
-                        forInput="kampanye"
-                        value="Kampanye"
-                        className="mt-4"
-                    ></InputLabel>
+                                <Editor
+                                    id='isiberita'
+                                    tinymceScriptSrc={'../tinymce/tinymce.min.js'}
+                                    onInit={(evt, editor) => editorRef.current = editor}
+                                    value={data.body}
+                                    onEditorChange={(newValue, editor) => setData('body', newValue)}
+                                    image_uploadtab= {true}
+                                    init={{
+                                        setup: (editor) => {
+                                            editor.on('init change', () => {
+                                            editor.save();
+                                            });
+                                        },
+                                    content_css: 'default',
+                                    height: 800,
+                                    menubar: false,
+                                    plugins: [
+                                        'advlist', 'autolink', 'lists', 'link', 'image', 'charmap',
+                                        'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                                        'insertdatetime', 'media', 'table', 'preview', 'help', 'wordcount', 'preview', 'visualblocks'
+                                    ],
+                                    toolbar: 'undo redo | blocks | ' +
+                                        'bold italic forecolor | alignleft aligncenter ' +
+                                        ' alignjustify | bullist numlist outdent indent | image | ' +
+                                        'removeformat | help',
+                                    content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
+                                    image_title: true,
+                                    automatic_uploads: true,
+                                    images_upload_url: '/upload',
+                                    file_picker_types: 'image',
+                                    file_picker_callback: handleFilePicker,
+                                    image_dimensions: false,
+                                    image_class_list: [
+                                        {title: 'Responsive', value: 'img-responsive'}
+                                    ]
+                                    }}
+                                />
+                                <InputError message={errors.body} className="mt-1" />
+                            </div>
 
-                    <PrimaryButton
-                        type='button'
-                        onClick={() => setIsOpen(true)}
-                    >
-                        Pilih Kampanye
-                    </PrimaryButton>
+                            <div>
+                                <InputLabel
+                                forInput="gambar"
+                                value="Gambar Berita"
+                                className="mt-4"
+                                ></InputLabel>
 
-                    <Transition appear show={isOpen} as={Fragment}>
-                        <Dialog as="div" className="relative z-10" onClose={() => setIsOpen(false)}>
-                        <Transition.Child
-                            as={Fragment}
-                            enter="ease-out duration-300"
-                            enterFrom="opacity-0"
-                            enterTo="opacity-100"
-                            leave="ease-in duration-200"
-                            leaveFrom="opacity-100"
-                            leaveTo="opacity-0"
-                        >
-                            <div className="fixed inset-0 bg-black bg-opacity-50" aria-hidden="true"/>
-                        </Transition.Child>
+                                <FileUploader
+                                id='gambar'
+                                handleChange={(file) => {setData('gambar', file)}}
+                                name="file"
+                                types={["JPG", "PNG", "JPEG"]}
+                                hoverTitle=" "
 
-                        <div className="fixed inset-0 overflow-y-auto">
-                            <div className="flex min-h-full items-center justify-center p-4 text-center">
-                            <Transition.Child
-                                as={Fragment}
-                                enter="ease-out duration-300"
-                                enterFrom="opacity-0 scale-95"
-                                enterTo="opacity-100 scale-100"
-                                leave="ease-in duration-200"
-                                leaveFrom="opacity-100 scale-100"
-                                leaveTo="opacity-0 scale-95"
-                            >
-                                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                                <Dialog.Title
-                                    as="h3"
-                                    className="text-lg font-medium leading-6 text-gray-900"
                                 >
-                                    Pilih Kampanye
-                                </Dialog.Title>
-                                {/* KONTEN */}
-                                <div className="mt-2">
-                                    
-                                </div>
+                                    <div className='bg-white grid place-content-center h-48 rounded-lg'>
+                                        <div>
+                                            <p>{data.gambar ? `File ${data.gambar.name}` : `Klik untuk Unggah / Tarik File Kesini`}</p>
+                                        </div>
+                                    </div>
+                                </FileUploader>
+                                {data.gambar ? <button type='button' className='border border-white bg-slate-400' onClick={() => {reset("gambar")}}>Clear</button> : null}
+                                <InputError message={errors.gambar} className="mt-1" />
 
-                                <div className="mt-4">
-                                    <button
-                                    type="button"
-                                    className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                                    onClick={() => setIsOpen(false)}
-                                    >
-                                    Pilih
-                                    </button>
-                                </div>
-                                </Dialog.Panel>
-                            </Transition.Child>
+                                {data.gambar &&  <img src={preview} /> }
                             </div>
-                        </div>
-                        </Dialog>
-                    </Transition>
-                    </div>
 
-                    <PrimaryButton className="mt-4" disabled={processing}>Buat Berita</PrimaryButton>
-                </form>
+                            <InputLabel
+                                forInput="kampanye"
+                                value="Pilih Kampanye"
+                                className="mt-4"
+                            ></InputLabel>
+
+                            <div>
+                                <TableBerita
+                                    rowData={kampanyes}
+                                    onSelectionChanged={onSelectionChanged}
+                                    gridRef={gridRef}
+                                    onRowClicked={onRowClicked}
+                                />
+                            </div>
+                            <InputError message={errors.kampanye_id} className="mt-1" />
+
+                            {data.kampanye_id &&
+                                <div className='mt-4'>
+                                    <p className='dark: text-white text-balck'>Kampanye yang dipilih : {judulKampanye}</p>
+                                    <PrimaryButton onClick={() => resetSelect()} type='button'>
+                                        Reset Selection
+                                    </PrimaryButton>
+                                </div>
+                            }
+
+                            <PrimaryButton className="mt-4" disabled={processing}>Buat Berita</PrimaryButton>
+                        </form>
+                    </> :
+                    <>
+                        <div className='text-center'>
+                            <p className='text-lg text-gray-200 mb-4'>Belum Ada kampanye ...</p>
+
+                            <CardLink
+                            href={route('kampanye.create')}
+                            >
+                                Buat Kampanye
+                            </CardLink>
+
+                        </div>
+                    </>
+                }
             </div>
         </AuthenticatedLayout>
     );

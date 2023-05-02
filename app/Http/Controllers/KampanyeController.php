@@ -11,10 +11,20 @@ use Carbon\Carbon;
 use App\Http\Requests\FormKampanyeRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use App\Models\Post;
 
 
 class KampanyeController extends Controller
 {
+    private function createExcerpt($content, $length) {
+        // Strip all HTML tags
+        $content = preg_replace('/[\x00-\x1F\x7F-\xFF]/', '', strip_tags($content));
+
+        // Limit the excerpt to the specified length
+        $excerpt = Str::limit($content, $length);
+
+        return $excerpt;
+    }
     /**
      * Display a listing of the resource.
      */
@@ -33,7 +43,7 @@ class KampanyeController extends Controller
             //     ];
             // }),
 
-            'kampanyes' => Kampanye::with('user:id')->get()->where('user_id', $userId)->map(function($kampanye) {
+            'kampanyes' => Kampanye::with('user:id')->where('user_id', $userId)->get()->map(function($kampanye) {
                 return [
                     'user_id' => $kampanye->user_id,
                     'id' => $kampanye->id,
@@ -41,7 +51,9 @@ class KampanyeController extends Controller
                     'target' => $kampanye->target,
                     'terverifikasi' => $kampanye->terverifikasi,
                     'show_url' => route('kampanye.show', $kampanye),
-                    'tgl_berkahir' => $kampanye->tgl_berakhir
+                    'tgl_berkahir' => $kampanye->tgl_berakhir,
+                    'gambar' => $kampanye->gambar,
+                    'kategori' => $kampanye->kategori
                 ];
             })
         ]);
@@ -108,7 +120,26 @@ class KampanyeController extends Controller
         //
         return Inertia::render('Kampanye/ShowKampanye', [
             //
-            'kampanye' => $kampanye
+            'kampanye' => $kampanye->with('posts')->where('id', $kampanye->id)->first()
+        ]);
+    }
+
+    public function showBeritaTerkait(Kampanye $kampanye): Response
+    {
+        //
+        return Inertia::render('Post/IndexPost', [
+            //
+            'posts' => Post::with('user')->where('kampanye_id', $kampanye->id)->get()->map(function($post) {
+                return [
+                    'user_id' => $post->user_id,
+                    'user_name' => $post->user->name,
+                    'judul' => $post->judul,
+                    'gambar' => $post->gambar,
+                    'excerpt' => $this->createExcerpt($post->body, 100),
+                    'show_url' => route('post.show', $post),
+                    'created_at' => $post->created_at
+                ];
+            })
         ]);
     }
 

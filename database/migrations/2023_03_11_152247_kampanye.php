@@ -20,6 +20,7 @@ return new class extends Migration
             $table->bigInteger('target');
             $table->bigInteger('dana_terkumpul')->default(0);
             $table->string('gambar');
+            $table->string('kategori');
             $table->string('judul');
             $table->mediumText('deskripsi');
             $table->boolean('terverifikasi')->default(false);

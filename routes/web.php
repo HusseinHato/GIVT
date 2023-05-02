@@ -52,6 +52,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::post('/upload', [KampanyeController::class, 'upload'])->name('uploadgambar');
     Route::get('/kampanye/{kampanye:slug}', [KampanyeController::class, 'show'])->name('kampanye.show');
+    Route::get('/kampanye/{kampanye:slug}/beritaterkait', [KampanyeController::class, 'showBeritaTerkait'])->name('kampanye.showbt');
     Route::get('/post/{post:slug}', [PostController::class, 'show'])->name('post.show');
 });
 

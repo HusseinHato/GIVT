@@ -12,6 +12,7 @@ import { NumericFormat } from 'react-number-format';
 import { FileUploader } from "react-drag-drop-files";
 import { Editor } from '@tinymce/tinymce-react';
 import { useEffect } from 'react';
+import Select from 'react-select'
 
 export default function Index({ auth }) {
 
@@ -29,7 +30,8 @@ export default function Index({ auth }) {
         target: '',
         tgl_mulai: startDate,
         tgl_berakhir: '',
-        gambar: ''
+        gambar: '',
+        kategori: ''
     });
 
     console.log(data);
@@ -88,6 +90,11 @@ export default function Index({ auth }) {
         // free memory when ever this component is unmounted
         return () => URL.revokeObjectURL(objectUrl)
     }, [data.gambar]);
+
+    const options = [
+        { value: 'Pendidikan', label: 'Pendidikan' },
+        { value: 'Kemanusiaan', label: 'Kemanusiaan' }
+      ]
 
     return (
         <AuthenticatedLayout auth={auth}>
@@ -238,6 +245,29 @@ export default function Index({ auth }) {
                     </div>
 
                     <div>
+                        <InputLabel
+                        forInput="kategori"
+                        value="Kategori Kampanye"
+                        className="mt-4"
+                        ></InputLabel>
+
+                        <Select
+                        options={options}
+                        isSearchable={false}
+                        onChange={(e) => setData('kategori', e.value)}
+                        placeholder='Pilih Kategori ...'
+                        />
+
+                    <InputError message={errors.kategori} className="mt-1" />
+                    </div>
+
+                    <div>
+                        <InputLabel
+                        forInput="gambar"
+                        value="Gambar Berita"
+                        className="mt-4"
+                        ></InputLabel>
+
                         <FileUploader
                         handleChange={(file) => {setData('gambar', file)}}
                         name="file"
@@ -245,7 +275,7 @@ export default function Index({ auth }) {
                         hoverTitle=" "
 
                         >
-                            <div className='mt-4 bg-white grid place-content-center h-48 rounded-lg'>
+                            <div className='bg-white grid place-content-center h-48 rounded-lg'>
                                 <div>
                                     <p>{data.gambar ? `File ${data.gambar.name}` : `Unggah / Tarik File Kesini`}</p>
                                 </div>

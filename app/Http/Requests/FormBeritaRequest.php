@@ -3,16 +3,15 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
 
-class FormKampanyeRequest extends FormRequest
+class FormBeritaRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return Auth::check();
+        return true;
     }
 
     /**
@@ -24,15 +23,9 @@ class FormKampanyeRequest extends FormRequest
     {
         return [
             'judul' => 'required|max:255|string|regex:/^[a-zA-Z0-9\s]+$/',
-            'body' => 'required|string',
-            'gambar' => 'required|image|file|max:1024'
+            'gambar' => 'required|image|file|max:1024',
+            'body' => 'required',
+            'kampanye_id' => 'required'
         ];
     }
-
-    public function messages(): array
-{
-    return [
-        'judul.required' => 'Harap isi judul post'
-    ];
-}
 }

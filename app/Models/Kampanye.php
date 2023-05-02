@@ -32,6 +32,6 @@ class Kampanye extends Model
 
     public function posts(): HasMany
     {
-        return $this->belongsTo(Post::class);
+        return $this->HasMany(Post::class);
     }
 }

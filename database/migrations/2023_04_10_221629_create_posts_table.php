@@ -17,7 +17,6 @@ return new class extends Migration
             $table->foreignId('kampanye_id')->constrained()->cascadeOnDelete();
             $table->string('judul');
             $table->text('body');
-            $table->string('excerpt');
             $table->string('slug');
             $table->string('gambar');
             $table->timestamps();

@@ -4,7 +4,7 @@ import { Head } from '@inertiajs/react';
 
 export default function Index({ auth, kampanye }) {
 
-    console.log(kampanye);
+    // console.log(kampanye);
 
     return (
         <AuthenticatedLayout auth={auth}>
