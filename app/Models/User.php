@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -52,5 +53,17 @@ class User extends Authenticatable
     public function posts(): HasMany
     {
         return $this->hasMany(Post::class);
+    }
+
+    public function donasis(): HasMany
+    {
+        return $this->hasMany(Donasi::class);
+    }
+
+    public function donasiKampanye(): BelongsToMany
+    {
+        return $this->belongsToMany(Kampanye::class, 'donasis')
+            ->withPivot('jumlah')
+            ->withTimestamps();
     }
 }

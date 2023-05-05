@@ -1,4 +1,5 @@
 import { Link, Head } from '@inertiajs/react';
+import PrimaryButton from '@/Components/PrimaryButton';
 
 export default function Welcome(props) {
     return (
@@ -20,11 +21,15 @@ export default function Welcome(props) {
                                 href={route('register')}
                                 className="ml-4 text-sm text-gray-700 dark:text-gray-500 underline"
                             >
-                                Register
+                                <PrimaryButton type='button'>
+                                    Register
+                                </PrimaryButton>
                             </Link>
                         </>
                     )}
                 </div>
+
+                <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
             </div>
         </>
     );

@@ -19,13 +19,14 @@ class KampanyeFactory extends Factory
     public function definition(): array
     {
         $now = Carbon::now();
+        $added = Carbon::now()->addDays(rand(1,100));
         return [
             //
             'judul' => fake()->words(rand(3,7), true),
             'deskripsi' => fake()->paragraph(rand(1,10)),
             'target' => rand(1,10)*1_000_000,
             'tgl_mulai' => $now,
-            'tgl_berakhir' => $now->addDays(rand(1,100)),
+            'tgl_berakhir' => $added,
             'gambar' => 'gambar-kampanye/chikerndrip.JPG',
             'user_id' => 1,
             'kategori' => fake()->randomElement(['Pendidikan', 'Kemanusiaan'])
