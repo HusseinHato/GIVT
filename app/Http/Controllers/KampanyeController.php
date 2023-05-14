@@ -45,6 +45,7 @@ class KampanyeController extends Controller
 
             'kampanyes' => Kampanye::with('user:id')->where('user_id', $userId)->get()->map(function($kampanye) {
                 return [
+                    dd($kampanye),
                     'user_id' => $kampanye->user_id,
                     'id' => $kampanye->id,
                     'judul' => $kampanye->judul,

@@ -27,13 +27,13 @@ export default function Dashboard(props) {
             <CardLink
                 href={route('post.index')}
             >
-                Lihat Post
+                Lihat Berita
             </CardLink>
 
             <CardLink
                 href={route('post.create')}
             >
-                Buat Post
+                Buat Berita
             </CardLink>
             </div>
 

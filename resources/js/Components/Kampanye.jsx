@@ -3,10 +3,16 @@ import { Editor } from '@tinymce/tinymce-react';
 import differenceInDays from 'date-fns/differenceInDays';
 import BeritaTerkait from '@/Components/BeritaTerkait';
 import { Link } from '@inertiajs/react';
+import PrimaryButton from './PrimaryButton';
+import { usePage } from '@inertiajs/react';
 
 
 export default function Kampanye({ kampanye }) {
     console.log(kampanye);
+
+    const { auth } = usePage().props;
+
+    // console.log(auth);
 
     const numberFormat = (value) =>
         new Intl.NumberFormat('id-ID', {
@@ -65,6 +71,14 @@ export default function Kampanye({ kampanye }) {
 
                     </>
                     : <p className='mt-4 text-lg text-white'>Belum Ada Berita Terkait Kampanye ...</p>
+                }
+                {auth.user && (auth.user.id != kampanye.user_id) &&
+                        <Link href={route('donasi.create', kampanye)}>
+                            <PrimaryButton type='button' className='mt-4'>
+                                Donasi Sekarang
+                            </PrimaryButton>
+                        </Link>
+
                 }
             </div>
         </div>

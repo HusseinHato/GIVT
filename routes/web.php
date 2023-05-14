@@ -9,6 +9,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\KampanyeController;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\DonasiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,14 +23,7 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-})->name('hal.utama');
+Route::get('/', [HomeController::class, 'index'])->name('hal.utama');
 
 //Google Auth
 
@@ -47,15 +42,22 @@ Route::resource('post', PostController::class)
     ->only(['index', 'store', 'create'])
     ->middleware(['auth', 'verified']);
 
+Route::resource('donasi', DonasiController::class)
+    ->only(['store'])
+    ->middleware(['auth', 'verified']);
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::post('/upload', [KampanyeController::class, 'upload'])->name('uploadgambar');
-    Route::get('/kampanye/{kampanye:slug}', [KampanyeController::class, 'show'])->name('kampanye.show');
-    Route::get('/kampanye/{kampanye:slug}/beritaterkait', [KampanyeController::class, 'showBeritaTerkait'])->name('kampanye.showbt');
-    Route::get('/post/{post:slug}', [PostController::class, 'show'])->name('post.show');
+    // Route::get('/donasi', [DonasiController::class, 'create'])->name('donasi.create');
+    Route::get('/kampanye/{kampanye:slug}/donasi', [DonasiController::class, 'create'])->name('donasi.create');
+    Route::get('/donasi/{donasi:id}', [DonasiController::class, 'show'])->name('donasi.show');
 });
 
+Route::get('/kampanye/{kampanye:slug}', [KampanyeController::class, 'show'])->name('kampanye.show');
+Route::get('/kampanye/{kampanye:slug}/beritaterkait', [KampanyeController::class, 'showBeritaTerkait'])->name('kampanye.showbt');
+Route::get('/post/{post:slug}', [PostController::class, 'show'])->name('post.show');
 
 
 

@@ -14,11 +14,13 @@ return new class extends Migration
         Schema::create('donasis', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('kampanye_id');
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('kampanye_id')->references('id')->on('kampanyes');
-            $table->integer('jumlah');
+            $table->string('nama')->default('Orang Baik');
+            $table->string('doa')->nullable();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('kampanye_id')->constrained()->cascadeOnDelete();
+            $table->bigInteger('jumlah');
+            $table->enum('status', ['Unpaid', 'Paid']);
+            $table->string('snaptoken')->nullable();
         });
     }
 

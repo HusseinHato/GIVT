@@ -166,7 +166,7 @@ export default function Index({ auth }) {
                             image_dimensions: false,
                             image_class_list: [
                                 {title: 'Responsive', value: 'img-responsive'}
-                            ]
+                            ],
                             }}
                         />
                         <InputError message={errors.deskripsi} className="mt-1" />

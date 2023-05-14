@@ -22,12 +22,6 @@ export default function Authenticated({ auth, header, children }) {
                                 </Link>
                             </div>
 
-                            <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <NavLink href={route('hal.utama')} active={route().current('hal.utama')}>
-                                    Home
-                                </NavLink>
-                            </div>
-
                             {auth.user &&
                             <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <NavLink href={route('dashboard')} active={route().current('dashboard')}>
