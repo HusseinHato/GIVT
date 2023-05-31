@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 
 class Post extends Model
 {
@@ -33,6 +34,16 @@ class Post extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function createExcerpt($content, $length) {
+        // Strip all HTML tags
+        $content = preg_replace('/[\x00-\x1F\x7F-\xFF]/', '', strip_tags($content));
+
+        // Limit the excerpt to the specified length
+        $excerpt = Str::limit($content, $length);
+
+        return $excerpt;
     }
 
 }

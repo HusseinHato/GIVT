@@ -19,15 +19,34 @@ class DonasiController extends Controller
     public function index(): Response
     {
         //
+        $userId = Auth::id();
+        return Inertia::render('Donasi/IndexDonasi', [
+            //
+            'donasis' => Donasi::with('kampanye')->where('user_id', $userId)->get()->map(function($donasi) {
+                return [
+                    'id' => $donasi->id,
+                    'judul' => $donasi->kampanye->judul,
+                    'show_url' => route('donasi.show', $donasi),
+                    'jumlah' => $donasi->jumlah,
+                    'gambar' => $donasi->kampanye->gambar,
+                    'status' => $donasi->status,
+                    'kategori' => $donasi->kampanye->kategori
+                ];
+            })
+        ]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create(Kampanye $kampanye): Response
+    public function create(Kampanye $kampanye)
     {
         // dd($request);
         //
+        if(Auth::user()->id == $kampanye->user_id){
+            return redirect(route('kampanye.show', $kampanye));
+        }
+
         return Inertia::render('Donasi/CreateDonasi', [
             //
             'kampanye' => $kampanye
@@ -54,12 +73,9 @@ class DonasiController extends Controller
 
         $params = array(
             'transaction_details' => array(
-                'order_id' => $donasi->id,
+                'order_id' => $donasi->uuid,
                 'gross_amount' => $donasi->jumlah
-            ),
-            'customer_details' => array(
-                'email' => Auth::user()->email,
-            ),
+            )
         );
 
         $snapToken = \Midtrans\Snap::getSnapToken($params);
@@ -79,7 +95,9 @@ class DonasiController extends Controller
         //
         return Inertia::render('Donasi/ShowDonasi', [
             //
-            'donasi' => $donasi
+            'donasi' => $donasi,
+            'kampanye' => $donasi->kampanye()->first(),
+            'show_url' => route('kampanye.show', $donasi->kampanye()->first())
         ]);
     }
 
@@ -105,5 +123,23 @@ class DonasiController extends Controller
     public function destroy(string $id): RedirectResponse
     {
         //
+    }
+
+    public function callback(Request $request)
+    {
+        //
+        $serverkey = config('midtrans.server_key');
+        $hashed = hash("sha512", $request->order_id.$request->status_code.$request->gross_amount.$serverkey);
+        if($hashed == $request->signature_key){
+            if($request->transaction_status == 'settlement' || $request->transaction_status == 'capture'){
+                $order = Donasi::where('uuid', $request->order_id)->first();
+                $order->update(['status' => 'Paid']);
+                $kampanye = $order->kampanye()->first();
+                $currentamount = $kampanye->dana_terkumpul;
+                $addedamount = $request->gross_amount;
+                $summedamount = $currentamount + $addedamount;
+                $kampanye->update(['dana_terkumpul' => $summedamount]);
+            }
+        }
     }
 }

@@ -17,7 +17,7 @@ export default function Index({ auth, posts }) {
                         return <PostPreview key={index} post={post} />
                     }) :
                     <>
-                        <p className='text-lg text-gray-200'>Belum Ada post ...</p>
+                        <p className='text-lg text-gray-800'>Belum Ada post ...</p>
 
                         <CardLink
                         href={route('post.create')}

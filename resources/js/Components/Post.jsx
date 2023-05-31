@@ -2,19 +2,29 @@ import React from 'react';
 import { Editor } from '@tinymce/tinymce-react';
 import differenceInDays from 'date-fns/differenceInDays';
 import { Link } from '@inertiajs/react';
+import Kampanye from './KampanyePreviewPost';
 
 
-export default function Post({ post }) {
+export default function Post({ post, show_url }) {
+
+    console.log(post);
+
+    const options = {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric"
+    }
 
 
     return (
-        <div className="p-6 flex space-x-2">
-            <div className="flex-1">
-                <h1 className="text-6xl text-white">{post.judul}</h1>
-                <p className="mt-4 text-lg text-white">Gambar Header :</p>
-                <img src={"/storage/"+post.gambar} alt="" className='w-100 h-96'/>
-                <p className="mt-4 text-lg text-white">Isi : </p>
-                <div>
+        <div className="max-w-3xl px-4 pt-6 lg:pt-10 pb-12 sm:px-6 lg:px-8 mx-auto">
+            <div className="p-6 bg-white rounded-md">
+                <img src={"/storage/"+post.gambar} alt="" className='w-full h-48 md:h-96 rounded-md object-fill'/>
+                <h1 className="mt-4 text-6xl text-black">{post.judul}</h1>
+                <p className="mt-2 text-md text-black">{new Date(post.created_at).toLocaleString("id-ID", options)}</p>
+                <p className="mt-1 text-md text-black">Dibuat Oleh : {post.user.name}</p>
+                <div className='mt-4'>
                     <Editor
                         tinymceScriptSrc={'../tinymce/tinymce.min.js'}
                         initialValue={post.body}
@@ -29,14 +39,8 @@ export default function Post({ post }) {
                          }}
                     />
                 </div>
-                <p className="mt-4 text-lg text-white">Dibuat Tanggal : {new Date(post.created_at).toLocaleString()}</p>
-                <p className="mt-4 text-lg text-white">Dibuat Oleh : {post.user.name}</p>
-                <p className="mt-4 text-lg text-white">Kampanye Terkait : </p>
-                <Link href={route('kampanye.show', post.kampanye)}>
-                    <button type='button' className='inline-block rounded bg-blue-500 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700 focus:ring focus:ring-blue-300 '>
-                        Selengkapnya
-                    </button>
-                </Link>
+                <p className="mt-4 text-lg text-black">Kampanye Terkait : </p>
+                <Kampanye kampanye={post.kampanye} show_url={show_url}/>
             </div>
         </div>
     );

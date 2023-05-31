@@ -5,7 +5,7 @@ import { Head } from '@inertiajs/react';
 import CardLink from '@/Components/CardLink';
 import KampanyePreview from '@/Components/KampanyePreview';
 
-export default function Index({ auth, kampanyes }) {
+export default function Index({ auth, kampanyes, posts }) {
 
     console.log(kampanyes);
 
@@ -18,7 +18,7 @@ export default function Index({ auth, kampanyes }) {
                         return <KampanyePreview key={index} kampanye={kampanye} />
                     }) :
                     <>
-                        <p className='text-lg text-gray-200'>Belum Ada kampanye ...</p>
+                        <p className='text-lg text-gray-800'>Belum Ada kampanye ...</p>
 
                         <CardLink
                         href={route('kampanye.create')}

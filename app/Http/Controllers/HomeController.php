@@ -36,9 +36,10 @@ class HomeController extends Controller
                     'target' => $kampanye->target,
                     'terverifikasi' => $kampanye->terverifikasi,
                     'show_url' => route('kampanye.show', $kampanye),
-                    'tgl_berkahir' => $kampanye->tgl_berakhir,
+                    'tgl_berakhir' => $kampanye->tgl_berakhir,
                     'gambar' => $kampanye->gambar,
-                    'kategori' => $kampanye->kategori
+                    'kategori' => $kampanye->kategori,
+                    'dana_terkumpul' => $kampanye->donasis()->where('status', 'Paid')->sum('jumlah'),
                 ];
             })
         ]);

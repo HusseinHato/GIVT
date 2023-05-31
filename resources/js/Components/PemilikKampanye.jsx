@@ -26,9 +26,16 @@ export default function Kampanye({ kampanye, posts, dana_terkumpul }) {
         new Date()
     )
 
+    const options = {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric"
+    }
+
     return (
     <div class="max-w-3xl px-4 pt-6 lg:pt-10 pb-12 sm:px-6 lg:px-8 mx-auto">
-        <div className="p-6 bg-white rounded-md">
+        <div className="p-6 space-x-2 bg-white rounded-md">
                 <img src={"/storage/"+kampanye.gambar} alt="" className='w-full h-48 md:h-96 rounded-md object-fill'/>
                 <h1 className="mt-4 text-6xl text-black">{kampanye.judul}</h1>
                 <p className="mt-4 text-lg text-black">Gambar Header :</p>
@@ -54,9 +61,10 @@ export default function Kampanye({ kampanye, posts, dana_terkumpul }) {
                 <div className="h-1 w-full bg-neutral-200 rounded-md">
                         <div className="h-1 bg-blue-700 rounded-md" style={{ width: (((dana_terkumpul/kampanye.target)*100) < 100) ? (dana_terkumpul/kampanye.target)*100 +'%' : 100 +'%'}} ></div>
                 </div>
-                {/* <p className="mt-4 text-lg text-black">Tgl Mulai : {new Date(kampanye.tgl_mulai).toLocaleString()}</p> */}
-                {/* <p className="mt-4 text-lg text-black">Tgl Berakhir : {new Date(kampanye.tgl_berakhir).toLocaleString()}</p> */}
+                <p className="mt-4 text-lg text-black">Tgl Mulai : {new Date(kampanye.tgl_mulai).toLocaleString("id-ID", options)}</p>
+                <p className="mt-4 text-lg text-black">Tgl Berakhir : {new Date(kampanye.tgl_berakhir).toLocaleString("id-ID", options)}</p>
                 <p className="mt-4 text-lg text-black">Sisa Hari : {(days > 0) ? days + " Hari" : 'Selesai'}</p>
+                <p className="mt-4 text-lg text-black">Terverifikasi : {(kampanye.terverifikasi)? 'Sudah diverifikasi' : 'Belum terverifikasi'}</p>
                 <p className="mt-4 text-lg text-black">Kategori : {kampanye.kategori}</p>
                 <p className="mt-4 mb-4 text-lg text-black">Berita Terkait : </p>
                 {!posts.length == 0 ?

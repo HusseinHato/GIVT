@@ -17,16 +17,6 @@ use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
-    private function createExcerpt($content, $length) {
-        // Strip all HTML tags
-        $content = preg_replace('/[\x00-\x1F\x7F-\xFF]/', '', strip_tags($content));
-
-        // Limit the excerpt to the specified length
-        $excerpt = Str::limit($content, $length);
-
-        return $excerpt;
-    }
-
     /**
      * Display a listing of the resource.
      */
@@ -41,7 +31,7 @@ class PostController extends Controller
                     'user_name' => $post->user->name,
                     'judul' => $post->judul,
                     'gambar' => $post->gambar,
-                    'excerpt' => $this->createExcerpt($post->body, 100),
+                    'excerpt' => $post->createExcerpt($post->body, 100),
                     'show_url' => route('post.show', $post),
                     'created_at' => $post->created_at
                 ];
@@ -58,7 +48,7 @@ class PostController extends Controller
         //
         return Inertia::render('Post/CreatePost', [
             //
-            'kampanyes' => Kampanye::with('user:id')->get()->where('user_id', $userId)->map(function($kampanye) {
+            'kampanyes' => Kampanye::with('user:id')->where('user_id', $userId)->get()->map(function($kampanye) {
                 return [
                     'user_id' => $kampanye->user_id,
                     'id' => $kampanye->id,
@@ -97,7 +87,8 @@ class PostController extends Controller
             //
             // dd($post),
             // dd($post->with('user', 'kampanye')->where('id', $post->id)->first()),
-            'post' => $post->with('user', 'kampanye')->where('id', $post->id)->first()
+            'post' => $post->with('user', 'kampanye')->where('id', $post->id)->first(),
+            'show_url' => route('kampanye.show', $post->kampanye()->first())
             // 'post' => $post
             // 'user' => User::where('id', $post->user_id)->get()
         ]);

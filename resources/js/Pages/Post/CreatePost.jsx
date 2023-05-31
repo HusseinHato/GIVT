@@ -108,9 +108,9 @@ export default function Index({ auth, kampanyes }) {
         <AuthenticatedLayout auth={auth}>
             <Head title="Berita" />
 
-            <div className="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
+            <div className="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8 bg-gray-200">
                 {
-                    (!kampanyes.length==0) ?
+                    (!kampanyes.length == 0) ?
                     <>
                         <form onSubmit={submit}>
                             <div>
@@ -221,7 +221,7 @@ export default function Index({ auth, kampanyes }) {
 
                             {data.kampanye_id &&
                                 <div className='mt-4'>
-                                    <p className='dark: text-white text-balck'>Kampanye yang dipilih : {judulKampanye}</p>
+                                    <p className='text-balck'>Kampanye yang dipilih : {judulKampanye}</p>
                                     <PrimaryButton onClick={() => resetSelect()} type='button'>
                                         Reset Selection
                                     </PrimaryButton>
@@ -233,7 +233,7 @@ export default function Index({ auth, kampanyes }) {
                     </> :
                     <>
                         <div className='text-center'>
-                            <p className='text-lg text-gray-200 mb-4'>Belum Ada kampanye ...</p>
+                            <p className='text-lg text-gray-800 mb-4'>Belum Ada kampanye ...</p>
 
                             <CardLink
                             href={route('kampanye.create')}

@@ -7,7 +7,7 @@ export default function Dashboard(props) {
         <AuthenticatedLayout
             auth={props.auth}
             errors={props.errors}
-            header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Dashboard</h2>}
+            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Dashboard</h2>}
         >
             <Head title="Dashboard" />
 
@@ -15,7 +15,7 @@ export default function Dashboard(props) {
             <CardLink
                 href={route('kampanye.index')}
             >
-                Lihat Kampanye
+                Lihat Kampanye Saya
             </CardLink>
 
             <CardLink
@@ -27,13 +27,25 @@ export default function Dashboard(props) {
             <CardLink
                 href={route('post.index')}
             >
-                Lihat Berita
+                Lihat Berita Saya
             </CardLink>
 
             <CardLink
                 href={route('post.create')}
             >
                 Buat Berita
+            </CardLink>
+
+            <CardLink
+                href={route('donasi.index')}
+            >
+                Lihat Riwayat Transaksi
+            </CardLink>
+
+            <CardLink
+                href={route('kampanye.diikuti')}
+            >
+                Lihat Kampanye yang diikuti
             </CardLink>
             </div>
 

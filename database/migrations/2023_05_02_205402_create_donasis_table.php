@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('donasis', function (Blueprint $table) {
             $table->id();
+            $table->uuid('uuid');
             $table->timestamps();
             $table->string('nama')->default('Orang Baik');
             $table->string('doa')->nullable();

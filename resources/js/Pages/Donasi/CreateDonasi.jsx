@@ -51,7 +51,7 @@ export default function Index({ auth, kampanye }) {
         <AuthenticatedLayout auth={auth}>
             <Head title="Donasi" />
 
-            <div className="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
+            <div className="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8 bg-gray-200">
                 <form onSubmit={submit}>
 
                 <div>
@@ -70,7 +70,7 @@ export default function Index({ auth, kampanye }) {
                                 onValueChange={(values) => {
                                     setData('jumlah', values.value)
                                 }}
-                                className="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-l-none rounded-md shadow-sm w-full"
+                                className="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-l-none rounded-md shadow-sm w-full"
                                 // isFocused={true}
                                 autoComplete="off"
                                 placeholder = "Jumlah Donasi ..."
@@ -83,10 +83,10 @@ export default function Index({ auth, kampanye }) {
 
                     <div>
                         <InputLabel forInput="nama" value="Nama Donatur" className="mt-4"/>
-                        <p className='mt-1 text-white text-2xl'>
+                        <p className='mt-1 text-gray-700 text-2xl'>
                             {auth.user.name}
                         </p>
-                        <p className='mt-1 text-white text-sm'>
+                        <p className='mt-1 text-gray-700 text-sm'>
                             {auth.user.email}
                         </p>
                         <div className="block mt-3">
@@ -96,7 +96,7 @@ export default function Index({ auth, kampanye }) {
                                     setAnonim(!anonim);
                                   }}
                                 />
-                                <span className="ml-2 text-lg text-gray-600 dark:text-gray-400">Donasi Secara Anonim</span>
+                                <span className="ml-2 text-lg text-gray-700">Donasi Secara Anonim</span>
                             </label>
                         </div>
                     </div>

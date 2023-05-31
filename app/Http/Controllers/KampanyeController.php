@@ -12,19 +12,11 @@ use App\Http\Requests\FormKampanyeRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use App\Models\Post;
+use App\Models\User;
 
 
 class KampanyeController extends Controller
 {
-    private function createExcerpt($content, $length) {
-        // Strip all HTML tags
-        $content = preg_replace('/[\x00-\x1F\x7F-\xFF]/', '', strip_tags($content));
-
-        // Limit the excerpt to the specified length
-        $excerpt = Str::limit($content, $length);
-
-        return $excerpt;
-    }
     /**
      * Display a listing of the resource.
      */
@@ -45,16 +37,16 @@ class KampanyeController extends Controller
 
             'kampanyes' => Kampanye::with('user:id')->where('user_id', $userId)->get()->map(function($kampanye) {
                 return [
-                    dd($kampanye),
                     'user_id' => $kampanye->user_id,
                     'id' => $kampanye->id,
                     'judul' => $kampanye->judul,
                     'target' => $kampanye->target,
                     'terverifikasi' => $kampanye->terverifikasi,
                     'show_url' => route('kampanye.show', $kampanye),
-                    'tgl_berkahir' => $kampanye->tgl_berakhir,
+                    'tgl_berakhir' => $kampanye->tgl_berakhir,
                     'gambar' => $kampanye->gambar,
-                    'kategori' => $kampanye->kategori
+                    'kategori' => $kampanye->kategori,
+                    'dana_terkumpul' => $kampanye->donasis()->where('status', 'Paid')->sum('jumlah')
                 ];
             })
         ]);
@@ -121,7 +113,20 @@ class KampanyeController extends Controller
         //
         return Inertia::render('Kampanye/ShowKampanye', [
             //
-            'kampanye' => $kampanye->with('posts')->where('id', $kampanye->id)->first()
+            'kampanye' => $kampanye,
+            'dana_terkumpul' => $kampanye->donasis()->where('status', 'Paid')->sum('jumlah'),
+            'posts' => $kampanye->posts()->get()->map(function($post) {
+                return [
+                    'user_id' => $post->user_id,
+                    'user_name' => $post->user->name,
+                    'judul' => $post->judul,
+                    'gambar' => $post->gambar,
+                    'excerpt' => $post->createExcerpt($post->body, 100),
+                    'show_url' => route('post.show', $post),
+                    'created_at' => $post->created_at
+                ];
+            }),
+            'donasis' => $kampanye->donasis()->where('status','paid')->get()
         ]);
     }
 
@@ -136,9 +141,41 @@ class KampanyeController extends Controller
                     'user_name' => $post->user->name,
                     'judul' => $post->judul,
                     'gambar' => $post->gambar,
-                    'excerpt' => $this->createExcerpt($post->body, 100),
+                    'excerpt' => $post->createExcerpt($post->body, 100),
                     'show_url' => route('post.show', $post),
                     'created_at' => $post->created_at
+                ];
+            })
+        ]);
+    }
+
+    public function kampdiikuti(): Response
+    {
+        $user = Auth::user();
+        return Inertia::render('Kampanye/IndexKampanye', [
+
+            // 'kampanyes' => Kampanye::all()->map(function($kampanye) {
+            //     return [
+            //         'id' => $kampanye->id,
+            //         'judul' => $kampanye->judul,
+            //         'target' => $kampanye->target,
+            //         'terverifikasi' => $kampanye->terverifikasi,
+            //         'show_url' => route('kampanye.show', $kampanye),
+            //     ];
+            // }),
+
+            'kampanyes' => $user->campaigns()->distinct()->get()->map(function($kampanye) {
+                return [
+                    'user_id' => $kampanye->user_id,
+                    'id' => $kampanye->id,
+                    'judul' => $kampanye->judul,
+                    'target' => $kampanye->target,
+                    'terverifikasi' => $kampanye->terverifikasi,
+                    'show_url' => route('kampanye.show', $kampanye),
+                    'tgl_berakhir' => $kampanye->tgl_berakhir,
+                    'gambar' => $kampanye->gambar,
+                    'kategori' => $kampanye->kategori,
+                    'dana_terkumpul' => $kampanye->donasis()->where('status', 'Paid')->sum('jumlah')
                 ];
             })
         ]);

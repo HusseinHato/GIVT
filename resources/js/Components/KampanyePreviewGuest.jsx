@@ -72,7 +72,6 @@ export default function Kampanye({ kampanye }) {
                             <p className="mt-4 text-md font-normal text-skin-base leading-5">
                                 Sisa Hari : {(days > 0) ? days + " Hari" : 'Selesai'}
                             </p>
-                            <p>Terverifikasi : {kampanye.terverifikasi ? <span className='text-green-500'>Iya</span> : <span className='text-red-600'>Belum</span>}</p>
                             <Link href={kampanye.show_url}>
                                 <button type='button' className='mt-2 inline-block rounded bg-blue-500 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700 focus:ring focus:ring-blue-300 '>
                                     Selengkapnya

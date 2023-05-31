@@ -21,6 +21,7 @@
         "vite": "^4.0.0"
     },
     "dependencies": {
+        "@material-tailwind/react": "^2.0.1",
         "@tinymce/tinymce-react": "^4.3.0",
         "ag-grid-community": "^29.3.3",
         "ag-grid-react": "^29.3.3",

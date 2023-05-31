@@ -18,7 +18,6 @@ return new class extends Migration
             $table->dateTime('tgl_mulai');
             $table->datetime('tgl_berakhir');
             $table->bigInteger('target');
-            $table->bigInteger('dana_terkumpul')->default(0);
             $table->string('gambar');
             $table->string('kategori');
             $table->string('judul');

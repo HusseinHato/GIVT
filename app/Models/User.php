@@ -50,6 +50,11 @@ class User extends Authenticatable
         return $this->hasMany(Kampanye::class);
     }
 
+    public function campaigns()
+    {
+        return $this->belongsToMany(Kampanye::class, 'donasis');
+    }
+
     public function posts(): HasMany
     {
         return $this->hasMany(Post::class);

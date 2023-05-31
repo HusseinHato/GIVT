@@ -53,6 +53,8 @@ Route::middleware('auth')->group(function () {
     // Route::get('/donasi', [DonasiController::class, 'create'])->name('donasi.create');
     Route::get('/kampanye/{kampanye:slug}/donasi', [DonasiController::class, 'create'])->name('donasi.create');
     Route::get('/donasi/{donasi:id}', [DonasiController::class, 'show'])->name('donasi.show');
+    Route::get('/donasi', [DonasiController::class, 'index'])->name('donasi.index');
+    Route::get('/kampanye/diikuti', [KampanyeController::class, 'kampdiikuti'])->name('kampanye.diikuti');
 });
 
 Route::get('/kampanye/{kampanye:slug}', [KampanyeController::class, 'show'])->name('kampanye.show');
