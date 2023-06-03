@@ -11,6 +11,7 @@ use App\Http\Controllers\KampanyeController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\DonasiController;
+use App\Http\Controllers\Admin\AdminAuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,44 +24,60 @@ use App\Http\Controllers\DonasiController;
 |
 */
 
-Route::get('/', [HomeController::class, 'index'])->name('hal.utama');
+Route::middleware('redirectadmin')->group(function () {
 
-//Google Auth
+    Route::get('/', [HomeController::class, 'index'])->name('hal.utama');
 
-Route::get('auth/redirect', [SocialController::class, 'googleRedirect'])->name('google.login');
-Route::get('auth/callback', [SocialController::class, 'googleCallback']);
+    //Google Auth
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+    Route::get('auth/redirect', [SocialController::class, 'googleRedirect'])->name('google.login');
+    Route::get('auth/callback', [SocialController::class, 'googleCallback']);
 
-Route::resource('kampanye', KampanyeController::class)
-    ->only(['index', 'store', 'create'])
-    ->middleware(['auth', 'verified']);
+    Route::get('/dashboard', function () {
+        return Inertia::render('Dashboard');
+    })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::resource('post', PostController::class)
-    ->only(['index', 'store', 'create'])
-    ->middleware(['auth', 'verified']);
+    Route::resource('kampanye', KampanyeController::class)
+        ->only(['index', 'store', 'create'])
+        ->middleware(['auth', 'verified']);
 
-Route::resource('donasi', DonasiController::class)
-    ->only(['store'])
-    ->middleware(['auth', 'verified']);
+    Route::resource('post', PostController::class)
+        ->only(['index', 'store', 'create'])
+        ->middleware(['auth', 'verified']);
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::post('/upload', [KampanyeController::class, 'upload'])->name('uploadgambar');
-    // Route::get('/donasi', [DonasiController::class, 'create'])->name('donasi.create');
-    Route::get('/kampanye/{kampanye:slug}/donasi', [DonasiController::class, 'create'])->name('donasi.create');
-    Route::get('/donasi/{donasi:id}', [DonasiController::class, 'show'])->name('donasi.show');
-    Route::get('/donasi', [DonasiController::class, 'index'])->name('donasi.index');
-    Route::get('/kampanye/diikuti', [KampanyeController::class, 'kampdiikuti'])->name('kampanye.diikuti');
+    Route::resource('donasi', DonasiController::class)
+        ->only(['store'])
+        ->middleware(['auth', 'verified']);
+
+    Route::middleware('auth')->group(function () {
+        Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+        Route::post('/upload', [KampanyeController::class, 'upload'])->name('uploadgambar');
+        // Route::get('/donasi', [DonasiController::class, 'create'])->name('donasi.create');
+        Route::get('/kampanye/{kampanye:slug}/donasi', [DonasiController::class, 'create'])->name('donasi.create');
+        Route::get('/donasi/{donasi:id}', [DonasiController::class, 'show'])->name('donasi.show');
+        Route::get('/donasi', [DonasiController::class, 'index'])->name('donasi.index');
+        Route::get('/kampanye/diikuti', [KampanyeController::class, 'kampdiikuti'])->name('kampanye.diikuti');
+    });
+
+
+    // Guest can access this route
+    Route::get('/kampanye/{kampanye:slug}', [KampanyeController::class, 'show'])->name('kampanye.show');
+    Route::get('/kampanye/{kampanye:slug}/beritaterkait', [KampanyeController::class, 'showBeritaTerkait'])->name('kampanye.showbt');
+    Route::get('/post/{post:slug}', [PostController::class, 'show'])->name('post.show');
+    Route::get('/admin/login', [AdminAuthController::class, 'getLogin'])->name('adminLogin');
+    Route::post('/admin/login', [AdminAuthController::class, 'postLogin'])->name('adminLoginPost');
+
 });
 
-Route::get('/kampanye/{kampanye:slug}', [KampanyeController::class, 'show'])->name('kampanye.show');
-Route::get('/kampanye/{kampanye:slug}/beritaterkait', [KampanyeController::class, 'showBeritaTerkait'])->name('kampanye.showbt');
-Route::get('/post/{post:slug}', [PostController::class, 'show'])->name('post.show');
 
+Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
+
+    Route::group(['middleware' => 'adminauth'], function () {
+        Route::get('/dashboard', [AdminAuthController::class, 'Dashboard'])->name('adminDashboard');
+
+    });
+});
 
 
 

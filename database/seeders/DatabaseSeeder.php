@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 use App\Models\User;
+use App\Models\Admin;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -24,6 +25,12 @@ class DatabaseSeeder extends Seeder
             'name' => 'User Dummy',
             'email' => 't@gmail.com',
             'password' => bcrypt('1')
+        ]);
+
+        Admin::create([
+            'name' => 'Admin1',
+            'email' => 'a@gmail.com',
+            'password' => bcrypt('2')
         ]);
 
         $this->call([

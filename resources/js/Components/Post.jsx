@@ -20,7 +20,7 @@ export default function Post({ post, show_url }) {
     return (
         <div className="max-w-3xl px-4 pt-6 lg:pt-10 pb-12 sm:px-6 lg:px-8 mx-auto">
             <div className="p-6 bg-white rounded-md">
-                <img src={"/storage/"+post.gambar} alt="" className='w-full h-48 md:h-96 rounded-md object-fill'/>
+                <img src={"/storage/"+post.gambar} alt="" className='w-full h-56 md:h-96 rounded-md object-fill'/>
                 <h1 className="mt-4 text-6xl text-black">{post.judul}</h1>
                 <p className="mt-2 text-md text-black">{new Date(post.created_at).toLocaleString("id-ID", options)}</p>
                 <p className="mt-1 text-md text-black">Dibuat Oleh : {post.user.name}</p>

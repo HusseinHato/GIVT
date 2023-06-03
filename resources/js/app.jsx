@@ -1,6 +1,9 @@
 import './bootstrap';
 import '../css/app.css';
 
+import { ThemeProvider } from "@material-tailwind/react";
+import React from "react";
+
 import { createRoot } from 'react-dom/client';
 import { createInertiaApp } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
@@ -13,7 +16,13 @@ createInertiaApp({
     setup({ el, App, props }) {
         const root = createRoot(el);
 
-        root.render(<App {...props} />);
+        root.render(
+            <React.StrictMode>
+                <ThemeProvider>
+                    <App {...props} />
+                </ThemeProvider>
+            </React.StrictMode>
+        );
     },
     progress: {
         color: '#4B5563',
