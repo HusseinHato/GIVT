@@ -16,13 +16,6 @@ class AdminAuthController extends Controller
         ]);
     }
 
-    public function Dashboard(){
-        return Inertia::render('Admin/Dashboard', [
-            //
-
-        ]);
-    }
-
     public function postLogin(Request $request)
     {
         $this->validate($request, [
@@ -33,7 +26,7 @@ class AdminAuthController extends Controller
         // dd(Auth::guard('admin')->attempt(['email' => $request->input('email'),  'password' => $request->input('password')]));
 
         if(Auth::guard('admin')->attempt(['email' => $request->input('email'),  'password' => $request->input('password')])){
-            // $user = auth()->guard('admin')->user();
+            $user = auth()->guard('admin')->user();
 
             // dd($user);
             return redirect(route('adminDashboard'));

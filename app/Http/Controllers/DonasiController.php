@@ -134,11 +134,11 @@ class DonasiController extends Controller
             if($request->transaction_status == 'settlement' || $request->transaction_status == 'capture'){
                 $order = Donasi::where('uuid', $request->order_id)->first();
                 $order->update(['status' => 'Paid']);
-                $kampanye = $order->kampanye()->first();
-                $currentamount = $kampanye->dana_terkumpul;
-                $addedamount = $request->gross_amount;
-                $summedamount = $currentamount + $addedamount;
-                $kampanye->update(['dana_terkumpul' => $summedamount]);
+                // $kampanye = $order->kampanye()->first();
+                // $currentamount = $kampanye->dana_terkumpul;
+                // $addedamount = $request->gross_amount;
+                // $summedamount = $currentamount + $addedamount;
+                // $kampanye->update(['dana_terkumpul' => $summedamount]);
             }
         }
     }

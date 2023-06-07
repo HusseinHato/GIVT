@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\DonasiController;
 use App\Http\Controllers\Admin\AdminAuthController;
+use App\Http\Controllers\Admin\AdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -74,7 +75,8 @@ Route::middleware('redirectadmin')->group(function () {
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
 
     Route::group(['middleware' => 'adminauth'], function () {
-        Route::get('/dashboard', [AdminAuthController::class, 'Dashboard'])->name('adminDashboard');
+        Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('adminDashboard');
+
 
     });
 });
