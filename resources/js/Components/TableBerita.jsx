@@ -4,7 +4,7 @@ import { useMemo, useRef, useState } from "react";
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 
-export default function TableBerita({rowData, onSelectionChanged, gridRef, onRowClicked}) {
+export default function TableBerita({rowData, onSelectionChanged, gridRef, onRowClicked, selectedRowOnLoad}) {
 
     const containerStyle = useMemo(() => ({ width: '100%', height: '100%' }), []);
     const gridStyle = useMemo(() => ({ height: '395px', width: '100%' }), []);

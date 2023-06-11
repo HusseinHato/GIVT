@@ -1,5 +1,4 @@
 import React, { HTMLAttributes, HTMLProps } from 'react';
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import InputError from '@/Components/InputError';
 import PrimaryButton from '@/Components/PrimaryButton';
 import { useForm, Head } from '@inertiajs/react';
@@ -14,17 +13,16 @@ import TableBerita from '@/Components/TableBerita';
 import CardLink from '@/Components/CardLink';
 
 
-
-export default function Index({ auth, kampanyes }) {
+export default function Index({ kampanyes, berita }) {
 
   // const [selectedRow, setSelectedRow] = React.useState(null);
 
-  // console.log(selectedRow);
+  console.log(berita);
 
-    const { data, setData, post, processing, reset, errors, transform, progress } = useForm({
-        body: '<p>Masukan Isi Berita.</p>',
-        judul: '',
-        gambar: '',
+    const { data, setData, patch, processing, reset, errors, transform, progress } = useForm({
+        body: berita.body,
+        judul: berita.judul,
+        // gambar: '',
         kampanye_id: ''
     });
 
@@ -35,7 +33,7 @@ export default function Index({ auth, kampanyes }) {
 
     const submit = (e) => {
         e.preventDefault();
-        post(route('post.store'), { onSuccess: () => reset() });
+        patch(route('post.update', berita));
     };
 
     const onHandleChange = (event) => {
@@ -66,20 +64,21 @@ export default function Index({ auth, kampanyes }) {
         input.click();
     };
 
-    const [preview, setPreview] = useState();
+    // const [preview, setPreview] = useState();
+    // console.log(preview);
 
-    useEffect(() => {
-        if (!data.gambar) {
-            setPreview(undefined)
-            return
-        }
+    // useEffect(() => {
+    //     if (!data.gambar) {
+    //         setPreview(null)
+    //         return
+    //     }
 
-        const objectUrl = URL.createObjectURL(data.gambar)
-        setPreview(objectUrl)
+    //     const objectUrl = URL.createObjectURL(data.gambar)
+    //     setPreview(objectUrl)
 
-        // free memory when ever this component is unmounted
-        return () => URL.revokeObjectURL(objectUrl)
-    }, [data.gambar]);
+    //     // free memory when ever this component is unmounted
+    //     return () => URL.revokeObjectURL(objectUrl)
+    // }, [data.gambar]);
 
     const [judulKampanye, setJudulKampanye] = useState();
 
@@ -91,6 +90,10 @@ export default function Index({ auth, kampanyes }) {
             setJudulKampanye(selectedRows[0].judul);
         }
     }, []);
+
+    useEffect(() => {
+
+    }, [])
 
     const onRowClicked = (e) => {
         const selectedRows = gridRef.current.api.getSelectedRows();
@@ -113,7 +116,12 @@ export default function Index({ auth, kampanyes }) {
                     <>
                         <form onSubmit={submit}>
                             <div>
-                                <InputLabel forInput="judul" value="Judul Berita" />
+                                <InputLabel forInput="gambarnow" value="Gambar Berita" />
+                                <img src={"/storage/" + berita.gambar} id='gambarnow'/>
+                            </div>
+
+                            <div>
+                                <InputLabel forInput="judul" value="Judul Berita" className="mt-4"/>
                                 <TextInput
                                     placeholder = "Judul Berita ..."
                                     id="judul"
@@ -137,7 +145,7 @@ export default function Index({ auth, kampanyes }) {
 
                                 <Editor
                                     id='isiberita'
-                                    tinymceScriptSrc={'../../tinymce/tinymce.min.js'}
+                                    tinymceScriptSrc={'../../../tinymce/tinymce.min.js'}
                                     onInit={(evt, editor) => editorRef.current = editor}
                                     value={data.body}
                                     onEditorChange={(newValue, editor) => setData('body', newValue)}
@@ -175,7 +183,7 @@ export default function Index({ auth, kampanyes }) {
                                 <InputError message={errors.body} className="mt-1" />
                             </div>
 
-                            <div>
+                            {/* <div>
                                 <InputLabel
                                 forInput="gambar"
                                 value="Gambar Berita"
@@ -199,7 +207,11 @@ export default function Index({ auth, kampanyes }) {
                                 {data.gambar ? <button type='button' className='border border-white bg-slate-400' onClick={() => {reset("gambar")}}>Clear</button> : null}
                                 <InputError message={errors.gambar} className="mt-1" />
 
-                                {data.gambar &&  <img src={preview} /> }
+                                {data.gambar &&  <img src={preview} />}
+                            </div> */}
+
+                            <div className='mt-4'>
+                                <p className='text-black'>Kampanye Sekarang : {berita.kampanye.judul}</p>
                             </div>
 
                             <InputLabel
@@ -220,26 +232,19 @@ export default function Index({ auth, kampanyes }) {
 
                             {data.kampanye_id &&
                                 <div className='mt-4'>
-                                    <p className='text-balck'>Kampanye yang dipilih : {judulKampanye}</p>
+                                    <p className='text-black'>Kampanye Akan diubah menjadi : {judulKampanye}</p>
                                     <PrimaryButton onClick={() => resetSelect()} type='button'>
                                         Reset Selection
                                     </PrimaryButton>
                                 </div>
                             }
 
-                            <PrimaryButton className="mt-4" disabled={processing}>Buat Berita</PrimaryButton>
+                            <PrimaryButton className="mt-4" disabled={processing}>Ubah Berita</PrimaryButton>
                         </form>
                     </> :
                     <>
                         <div className='text-center'>
                             <p className='text-lg text-gray-800 mb-4'>Belum Ada kampanye ...</p>
-
-                            <CardLink
-                            href={route('kampanye.create')}
-                            >
-                                Buat Kampanye
-                            </CardLink>
-
                         </div>
                     </>
                 }

@@ -55,11 +55,6 @@ class User extends Authenticatable
         return $this->belongsToMany(Kampanye::class, 'donasis');
     }
 
-    public function posts(): HasMany
-    {
-        return $this->hasMany(Post::class);
-    }
-
     public function donasis(): HasMany
     {
         return $this->hasMany(Donasi::class);

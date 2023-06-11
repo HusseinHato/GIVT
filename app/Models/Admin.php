@@ -26,4 +26,10 @@ class Admin extends Authenticatable
     protected $hidden = [
         'password'
     ];
+
+    public function posts(): HasMany
+    {
+        return $this->hasMany(Post::class);
+    }
+
 }

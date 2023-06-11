@@ -42,10 +42,6 @@ Route::middleware('redirectadmin')->group(function () {
         ->only(['index', 'store', 'create'])
         ->middleware(['auth', 'verified']);
 
-    Route::resource('post', PostController::class)
-        ->only(['index', 'store', 'create'])
-        ->middleware(['auth', 'verified']);
-
     Route::resource('donasi', DonasiController::class)
         ->only(['store'])
         ->middleware(['auth', 'verified']);
@@ -72,11 +68,16 @@ Route::middleware('redirectadmin')->group(function () {
 });
 
 
-Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
+Route::group(['prefix' => 'admin'], function () {
 
     Route::group(['middleware' => 'adminauth'], function () {
         Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('adminDashboard');
 
+        Route::resource('post', PostController::class)
+        ->only(['index', 'store', 'update', 'create']);
+
+        Route::get('/post/{post:slug}', [PostController::class, 'showAdmin'])->name('post.show');
+        Route::get('/post/edit/{post:slug}', [PostController::class, 'edit'])->name('post.edit');
 
     });
 });

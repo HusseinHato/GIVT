@@ -5,7 +5,7 @@ import { Link } from '@inertiajs/react';
 import Kampanye from './KampanyePreviewPost';
 
 
-export default function Post({ post, show_url }) {
+export default function PostAdmin({ post, show_url }) {
 
     console.log(post);
 
@@ -18,7 +18,7 @@ export default function Post({ post, show_url }) {
 
 
     return (
-        <div className="max-w-3xl px-4 pt-6 lg:pt-10 pb-12 sm:px-6 lg:px-8 mx-auto">
+        <div className="max-w-4xl px-4 pt-6 lg:pt-10 pb-12 sm:px-6 lg:px-8 mx-auto">
             <div className="p-6 bg-white rounded-md">
                 <img src={"/storage/"+post.gambar} alt="" className='w-full h-56 md:h-96 rounded-md object-fill'/>
                 <h1 className="mt-4 text-6xl text-black">{post.judul}</h1>
@@ -26,7 +26,7 @@ export default function Post({ post, show_url }) {
                 <p className="mt-1 text-md text-black">Dibuat Oleh : {post.admin.name}</p>
                 <div className='mt-4'>
                     <Editor
-                        tinymceScriptSrc={'../tinymce/tinymce.min.js'}
+                        tinymceScriptSrc={'../../tinymce/tinymce.min.js'}
                         initialValue={post.body}
                         disabled = {true}
                         init={{

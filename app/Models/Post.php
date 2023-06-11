@@ -31,9 +31,9 @@ class Post extends Model
         return $this->belongsTo(Kampanye::class);
     }
 
-    public function user(): BelongsTo
+    public function admin(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Admin::class);
     }
 
     public function createExcerpt($content, $length) {
