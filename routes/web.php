@@ -39,7 +39,7 @@ Route::middleware('redirectadmin')->group(function () {
     })->middleware(['auth', 'verified'])->name('dashboard');
 
     Route::resource('kampanye', KampanyeController::class)
-        ->only(['index', 'store', 'create'])
+        ->only(['index', 'store', 'create','update'])
         ->middleware(['auth', 'verified']);
 
     Route::resource('donasi', DonasiController::class)
@@ -55,13 +55,14 @@ Route::middleware('redirectadmin')->group(function () {
         Route::get('/donasi/{donasi:id}', [DonasiController::class, 'show'])->name('donasi.show');
         Route::get('/donasi', [DonasiController::class, 'index'])->name('donasi.index');
         Route::get('/kampanye/diikuti', [KampanyeController::class, 'kampdiikuti'])->name('kampanye.diikuti');
+        Route::get('/kampanye/{kampanye:slug}/edit', [KampanyeController::class, 'edit'])->name('kampanye.edit');
     });
 
 
     // Guest can access this route
     Route::get('/kampanye/{kampanye:slug}', [KampanyeController::class, 'show'])->name('kampanye.show');
     Route::get('/kampanye/{kampanye:slug}/beritaterkait', [KampanyeController::class, 'showBeritaTerkait'])->name('kampanye.showbt');
-    Route::get('/post/{post:slug}', [PostController::class, 'show'])->name('post.show');
+    Route::get('/post/{post:slug}', [PostController::class, 'show'])->name('post.show.user');
     Route::get('/admin/login', [AdminAuthController::class, 'getLogin'])->name('adminLogin');
     Route::post('/admin/login', [AdminAuthController::class, 'postLogin'])->name('adminLoginPost');
 
@@ -74,11 +75,22 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('adminDashboard');
 
         Route::resource('post', PostController::class)
-        ->only(['index', 'store', 'update', 'create']);
+        ->only(['index', 'store','create'])
+        ->middleware(['adminauth']);
 
-        Route::get('/post/{post:slug}', [PostController::class, 'showAdmin'])->name('post.show');
         Route::get('/post/edit/{post:slug}', [PostController::class, 'edit'])->name('post.edit');
+        Route::post('/post/edit/{post:slug}', [PostController::class, 'update'])->name('post.update');
+        Route::get('/post/show/{post:slug}', [PostController::class, 'showAdmin'])->name('post.show');
+        Route::delete('/post/delete/{post:id}', [PostController::class, 'destroy'])->name('post.destroy');
 
+        Route::get('/kampanye', [KampanyeController::class, 'indexAdmin'])->name('admin.kampanye.index');
+        Route::get('/kampanye/{kampanye:id}', [KampanyeController::class, 'adminshow'])->name('admin.kampanye.show');
+        Route::patch('/kampanye/{kampanye:id}', [KampanyeController::class, 'konfirmasi'])->name('admin.kampanye.konfirmasi');
+
+        Route::get('/donasi', [DonasiController::class, 'indexAdmin'])->name('admin.donasi.index');
+        Route::get('/donasi/{donasi:id}', [DonasiController::class, 'showAdmin'])->name('admin.donasi.show');
+
+        Route::post('/logout', [AdminAuthController::class, 'adminlogout'])->name('admin.logout');
     });
 });
 

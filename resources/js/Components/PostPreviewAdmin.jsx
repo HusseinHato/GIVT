@@ -14,6 +14,13 @@ export default function PostPreview({ post }) {
 
     // console.log(new Date(post.created_at).toLocaleString());
 
+    const options = {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric"
+    }
+
     return (
         // <div className="flex flex-col justify-center">
         // <div className="relative flex flex-col md:flex-row md:space-x-5 space-y-3 md:space-y-0 rounded-xl shadow-lg p-3 max-w-xs md:max-w-3xl mx-auto border border-white bg-white">
@@ -37,9 +44,9 @@ export default function PostPreview({ post }) {
 
         <div className="container mx-auto">
             <div style={{ backgroundColor: 'rgb(245 245 245)' }} className='rounded-md'>
-                <div className="space-y-4 md:grid md:grid-cols-3 md:items-start md:gap-2 md:space-y-0 rounded-md">
+                <div className="space-y-4 lg:grid lg:grid-cols-3 lg:items-start lg:gap-2 lg:space-y-0 rounded-md">
                     <div className="">
-                        <img className="h-52 w-full rounded-md" src={"/storage/"+post.gambar} alt="Featured Photo"></img>
+                        <img className="h-52 lg:min-w-full w-96 lg:h-48 rounded-md" src={"/storage/"+post.gambar} alt="Featured Photo"></img>
                     </div>
                     <div className="sm:col-span-2">
                         <div className="p-4">
@@ -48,7 +55,7 @@ export default function PostPreview({ post }) {
                                 {post.excerpt}
                             </p>
                             <p className="mt-4 text-sm font-normal text-skin-base leading-5">
-                            {new Date(post.created_at).toLocaleString()}
+                            {new Date(post.created_at).toLocaleString("id-ID", options)}
                             </p>
                             <Link href={post.show_url}>
                                 <button type='button' className='inline-block rounded bg-blue-500 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700 focus:ring focus:ring-blue-300 '>

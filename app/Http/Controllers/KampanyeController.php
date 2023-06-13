@@ -52,6 +52,38 @@ class KampanyeController extends Controller
         ]);
     }
 
+    public function indexAdmin(): Response
+    {
+        // $userId = Auth::id();
+        return Inertia::render('Admin/IndexKampanye', [
+
+            // 'kampanyes' => Kampanye::all()->map(function($kampanye) {
+            //     return [
+            //         'id' => $kampanye->id,
+            //         'judul' => $kampanye->judul,
+            //         'target' => $kampanye->target,
+            //         'terverifikasi' => $kampanye->terverifikasi,
+            //         'show_url' => route('kampanye.show', $kampanye),
+            //     ];
+            // }),
+
+            'kampanyes' => Kampanye::all()->map(function($kampanye) {
+                return [
+                    'user_id' => $kampanye->user_id,
+                    'id' => $kampanye->id,
+                    'judul' => $kampanye->judul,
+                    'target' => $kampanye->target,
+                    'terverifikasi' => $kampanye->terverifikasi,
+                    'show_url' => route('admin.kampanye.show', $kampanye),
+                    'tgl_berakhir' => $kampanye->tgl_berakhir,
+                    'gambar' => $kampanye->gambar,
+                    'kategori' => $kampanye->kategori,
+                    'dana_terkumpul' => $kampanye->donasis()->where('status', 'Paid')->sum('jumlah')
+                ];
+            })
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -69,15 +101,6 @@ class KampanyeController extends Controller
      */
     public function store(FormKampanyeRequest $request): RedirectResponse
     {
-        // dd($request);
-
-        // $validated = $request->validate([
-        //     'deskripsi' => 'required',
-        //     'judul' => 'required|max:255',
-        //     'target' => 'required|integer|gt:0',
-        //     'tgl_mulai' => 'required|date',
-        //     'tgl_berakhir' => 'required|integer|gt:0'
-        // ]);
 
         $validated = $request->validated();
 
@@ -85,21 +108,21 @@ class KampanyeController extends Controller
 
         // dd($validated);
 
-        $tglTemp = Carbon::createFromFormat('Y-m-d H:i:s',  $validated['tgl_mulai']);;
-        $lamaHari = $validated['tgl_berakhir'];
-        $hasil = collect($validated);
-        $tgl_berakhir = $tglTemp->addDays($lamaHari)->toDateTimeString();
+        // $tglTemp = Carbon::createFromFormat('Y-m-d H:i:s',  $validated['tgl_mulai']);;
+        // $lamaHari = $validated['tgl_berakhir'];
+        // $hasil = collect($validated);
+        // $tgl_berakhir = $tglTemp->addDays($lamaHari)->toDateTimeString();
 
         // dd($validated['tgl_mulai']);
         // dd($tgl_berakhir);
 
         // dd($hasil);
 
-        $hasilakhir = $hasil->merge(['tgl_berakhir' => $tgl_berakhir]);
+        // $hasilakhir = $hasil->merge(['tgl_berakhir' => $tgl_berakhir]);
 
         // dd($hasilakhir);
 
-        $request->user()->kampanyes()->create($hasilakhir->toArray());
+        $request->user()->kampanyes()->create($validated);
 
 
         return redirect(route('kampanye.index'));
@@ -117,15 +140,37 @@ class KampanyeController extends Controller
             'dana_terkumpul' => $kampanye->donasis()->where('status', 'Paid')->sum('jumlah'),
             'posts' => $kampanye->posts()->get()->map(function($post) {
                 return [
-                    'user_id' => $post->user_id,
-                    'user_name' => $post->user->name,
+                    'user_id' => $post->admin_id,
+                    'user_name' => $post->admin->name,
                     'judul' => $post->judul,
                     'gambar' => $post->gambar,
                     'excerpt' => $post->createExcerpt($post->body, 100),
-                    'show_url' => route('post.show', $post),
+                    'show_url' => route('post.show.user', $post),
                     'created_at' => $post->created_at
                 ];
             }),
+            'donasis' => $kampanye->donasis()->where('status','paid')->get()
+        ]);
+    }
+
+    public function adminshow(Kampanye $kampanye): Response
+    {
+        //
+        return Inertia::render('Admin/ShowKampanye', [
+            //
+            'kampanye' => $kampanye,
+            'dana_terkumpul' => $kampanye->donasis()->where('status', 'Paid')->sum('jumlah'),
+            // 'posts' => $kampanye->posts()->get()->map(function($post) {
+            //     return [
+            //         'user_id' => $post->user_id,
+            //         'user_name' => $post->user->name,
+            //         'judul' => $post->judul,
+            //         'gambar' => $post->gambar,
+            //         'excerpt' => $post->createExcerpt($post->body, 100),
+            //         // 'show_url' => route('post.show', $post),
+            //         'created_at' => $post->created_at
+            //     ];
+            // }),
             'donasis' => $kampanye->donasis()->where('status','paid')->get()
         ]);
     }
@@ -135,14 +180,14 @@ class KampanyeController extends Controller
         //
         return Inertia::render('Post/IndexPost', [
             //
-            'posts' => Post::with('user')->where('kampanye_id', $kampanye->id)->get()->map(function($post) {
+            'posts' => Post::with('admin')->where('kampanye_id', $kampanye->id)->get()->map(function($post) {
                 return [
-                    'user_id' => $post->user_id,
-                    'user_name' => $post->user->name,
+                    'user_id' => $post->admin_id,
+                    'user_name' => $post->admin->name,
                     'judul' => $post->judul,
                     'gambar' => $post->gambar,
                     'excerpt' => $post->createExcerpt($post->body, 100),
-                    'show_url' => route('post.show', $post),
+                    'show_url' => route('post.show.user', $post),
                     'created_at' => $post->created_at
                 ];
             })
@@ -187,6 +232,9 @@ class KampanyeController extends Controller
     public function edit(Kampanye $kampanye): Response
     {
         //
+        return Inertia::render('Kampanye/EditKampanye', [
+            'kampanye' => $kampanye
+        ]);
     }
 
     /**
@@ -195,6 +243,23 @@ class KampanyeController extends Controller
     public function update(Request $request, Kampanye $kampanye): RedirectResponse
     {
         //
+        
+    }
+
+    public function konfirmasi(Request $request, Kampanye $kampanye): RedirectResponse
+    {
+        //
+        $validated = $request->validate([
+            'terverifikasi' => 'required|boolean',
+        ]);
+
+        // dd($validated);
+
+        $kampanye->terverifikasi = $validated['terverifikasi'];
+
+        $kampanye->save();
+
+        return redirect(route('admin.kampanye.show', $kampanye));
     }
 
     /**

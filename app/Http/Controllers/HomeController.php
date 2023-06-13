@@ -28,7 +28,7 @@ class HomeController extends Controller
         return Inertia::render('Welcome', [
             'canLogin' => Route::has('login'),
             'canRegister' => Route::has('register'),
-            'kampanyes' => Kampanye::with('user')->get()->map(function($kampanye) {
+            'kampanyes' => Kampanye::with('user')->where('terverifikasi', true)->get()->map(function($kampanye) {
                 return [
                     'user_id' => $kampanye->user_id,
                     'id' => $kampanye->id,

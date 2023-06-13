@@ -21,9 +21,6 @@ export default function Index({ auth, donasis }) {
                     </>
 
                     }
-                    <div>
-
-                    </div>
                 </div>
 
 

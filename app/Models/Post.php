@@ -38,7 +38,7 @@ class Post extends Model
 
     public function createExcerpt($content, $length) {
         // Strip all HTML tags
-        $content = preg_replace('/[\x00-\x1F\x7F-\xFF]/', '', strip_tags($content));
+        $content = preg_replace('/(&nbsp;|<[^>]+>|[\x00-\x1F\x7F-\xFF])/u', ' ', strip_tags($content));
 
         // Limit the excerpt to the specified length
         $excerpt = Str::limit($content, $length);

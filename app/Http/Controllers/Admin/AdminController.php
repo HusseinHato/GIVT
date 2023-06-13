@@ -19,7 +19,11 @@ class AdminController extends Controller
             //
             'jmlhuser' => User::all()->count(),
             'jmlhkamp' => Kampanye::all()->count(),
-            'totaldonasi' => Donasi::where('status', 'Paid')->sum('jumlah')
+            'totaldonasi' => Donasi::where('status', 'Paid')->sum('jumlah'),
+            'userFreq' =>   User::withCount(['donasis as donasis_count' => function ($query) {
+                                $query->where('status', 'Paid');
+                            }])->orderBy('donasis_count', 'desc')->get(5),
+            'userMost' => User::withSum('donasis', 'jumlah')->orderByDesc('donasis_sum_jumlah')->get(5)
         ]);
     }
 }

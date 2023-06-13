@@ -23,10 +23,14 @@ import {
   import { XMarkIcon } from "@heroicons/react/24/outline";
   import React from "react";
   import { ChevronRightIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
-  import { Link, useRemember } from "@inertiajs/react";
+  import { Link, useRemember, router } from "@inertiajs/react";
 
 
     export default function SidebarAdmin({ showSideNav, setShowSideNav }) {
+
+        const handleLogout = () => {
+            router.post(route('admin.logout'));
+          };
 
     const [open, setOpen] = React.useState(0);
 
@@ -61,9 +65,11 @@ import {
             {/* <Button variant={route().current("adminNotifikasi") ? "gradient" : "text"  } color={route().current("adminDashboard") ? "blue" : "white"  } >
                 Notifikasi
             </Button> */}
-            <Button variant={route().current("adminMaster") ? "gradient" : "text"  } color={route().current("adminMaster") ? "blue" : "white"  }>
-                Master
-            </Button>
+            <Link href={route("admin.kampanye.index")} className="flex">
+                <Button variant={route().current("admin.kampanye.index") ? "gradient" : "text"  } color={route().current("admin.kampanye.index") ? "blue" : "white"} className="grow">
+                    Kampanye
+                </Button>
+            </Link>
             {/* <Button variant={route().current("adminMaster") ? "gradient" : "text"  } color={route().current("adminDashboard") ? "blue" : "white"  }>
                 Berita
             </Button> */}
@@ -102,12 +108,19 @@ import {
                 </List>
             </AccordionBody>
             </Accordion>
-            <Button variant={route().current("adminKonfirmKampanye") ? "gradient" : "text"  } color={route().current("adminKonfirmKampanye") ? "blue" : "white"  }>
+            {/* <Button variant={route().current("adminKonfirmKampanye") ? "gradient" : "text"  } color={route().current("adminKonfirmKampanye") ? "blue" : "white"  }>
                 Konfirmasi Kampanye
-            </Button>
-            <Button variant={route().current("adminTransaksi") ? "gradient" : "text"  } color={route().current("adminTransaksi") ? "blue" : "white"  }>
-                Transaksi
-            </Button>
+            </Button> */}
+            <Link href={route("admin.donasi.index")} className="flex">
+                <Button variant={route().current("adminTransaksi") ? "gradient" : "text"  } color={route().current("adminTransaksi") ? "blue" : "white"  } className="grow">
+                    Transaksi
+                </Button>
+            </Link>
+            <div className="flex">
+                <Button onClick={handleLogout} variant={"gradient"} color="white" className="grow">
+                    Logout
+                </Button>
+            </div>
         </List>
       </Card>
     );

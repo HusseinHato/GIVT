@@ -36,6 +36,26 @@ class DonasiController extends Controller
         ]);
     }
 
+    public function indexAdmin(): Response
+    {
+        //
+        $userId = Auth::id();
+        return Inertia::render('Admin/IndexDonasi', [
+            //
+            'donasis' => Donasi::with('kampanye')->get()->map(function($donasi) {
+                return [
+                    'id' => $donasi->id,
+                    'judul' => $donasi->kampanye->judul,
+                    'show_url' => route('admin.donasi.show', $donasi),
+                    'jumlah' => $donasi->jumlah,
+                    'gambar' => $donasi->kampanye->gambar,
+                    'status' => $donasi->status,
+                    'kategori' => $donasi->kampanye->kategori
+                ];
+            })
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -98,6 +118,17 @@ class DonasiController extends Controller
             'donasi' => $donasi,
             'kampanye' => $donasi->kampanye()->first(),
             'show_url' => route('kampanye.show', $donasi->kampanye()->first())
+        ]);
+    }
+
+    public function showAdmin(Donasi $donasi): Response
+    {
+        //
+        return Inertia::render('Admin/ShowDonasi', [
+            //
+            'donasi' => $donasi,
+            'kampanye' => $donasi->kampanye()->first(),
+            'show_url' => route('admin.kampanye.show', $donasi->kampanye()->first())
         ]);
     }
 

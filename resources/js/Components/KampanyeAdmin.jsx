@@ -7,9 +7,9 @@ import PrimaryButton from './PrimaryButton';
 import { usePage } from '@inertiajs/react';
 
 
-export default function Kampanye({ kampanye, posts, dana_terkumpul }) {
-    // console.log(kampanye);
-    // console.log(posts);
+export default function KampanyeAdmin({ kampanye, posts, dana_terkumpul }) {
+    console.log(kampanye);
+    console.log(posts);
 
     const { auth } = usePage().props;
 
@@ -26,16 +26,23 @@ export default function Kampanye({ kampanye, posts, dana_terkumpul }) {
         new Date()
     )
 
+    const options = {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric"
+    }
+
     return (
-    <div class="max-w-3xl px-4 pt-6 lg:pt-10 pb-12 sm:px-6 lg:px-8 mx-auto">
+    <div className="max-w-3xl px-4 pt-6 lg:pt-10 pb-12 sm:px-6 lg:px-8 mx-auto">
         <div className="p-6 bg-white rounded-md">
-                <img src={"/storage/"+kampanye.gambar} alt="" className='w-full h-48 md:h-96 rounded-md object-fill'/>
+        <img src={"/storage/"+kampanye.gambar} alt="" className='w-full h-48 md:h-96 rounded-md object-fill'/>
                 <h1 className="mt-4 text-6xl text-black">{kampanye.judul}</h1>
                 <p className="mt-4 text-lg text-black">Gambar Header :</p>
                 <p className="mt-4 text-lg text-black">Deskripsi : </p>
                 <div>
                     <Editor
-                        tinymceScriptSrc={'../tinymce/tinymce.min.js'}
+                        tinymceScriptSrc={'../../tinymce/tinymce.min.js'}
                         initialValue={kampanye.deskripsi}
                         disabled = {true}
                         init={{
@@ -54,39 +61,11 @@ export default function Kampanye({ kampanye, posts, dana_terkumpul }) {
                 <div className="h-1 w-full bg-neutral-200 rounded-md">
                         <div className="h-1 bg-blue-700 rounded-md" style={{ width: (((dana_terkumpul/kampanye.target)*100) < 100) ? (dana_terkumpul/kampanye.target)*100 +'%' : 100 +'%'}} ></div>
                 </div>
-                {/* <p className="mt-4 text-lg text-black">Tgl Mulai : {new Date(kampanye.tgl_mulai).toLocaleString()}</p> */}
-                {/* <p className="mt-4 text-lg text-black">Tgl Berakhir : {new Date(kampanye.tgl_berakhir).toLocaleString()}</p> */}
+                <p className="mt-4 text-lg text-black">Tgl Mulai : {new Date(kampanye.tgl_mulai).toLocaleString("id-ID", options)}</p>
+                <p className="mt-4 text-lg text-black">Tgl Berakhir : {new Date(kampanye.tgl_berakhir).toLocaleString("id-ID", options)}</p>
                 <p className="mt-4 text-lg text-black">Sisa Hari : {(days > 0) ? days + " Hari" : 'Selesai'}</p>
+                <p className="mt-4 text-lg text-black">Terverifikasi : {(kampanye.terverifikasi)? 'Sudah diverifikasi' : 'Belum terverifikasi'}</p>
                 <p className="mt-4 text-lg text-black">Kategori : {kampanye.kategori}</p>
-                <p className="mt-4 mb-4 text-lg text-black">Berita Terkait : </p>
-                {!posts.length == 0 ?
-                    <div className='space-y-2'>
-                        {posts.slice(0, 2).map((post, index) => {
-                            // console.log(post)
-                            return <PostPreview key={index} post={post}/>
-                        })}
-
-                        <Link href={route('kampanye.showbt', kampanye)}>
-                            {/* <button type='button' className='inline-block rounded bg-blue-500 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700 focus:ring focus:ring-blue-300 mt-4'>
-                                Berita Terkait Lainnya ...
-                            </button> */}
-                            <PrimaryButton className='mt-4'>
-                                Berita Terkait Lainnya ...
-                            </PrimaryButton>
-                        </Link>
-
-                    </div>
-                    : <p className='mt-4 text-lg text-black'>Belum Ada Berita Terkait Kampanye ...</p>
-                }
-
-                <div>
-                    <Link href={route('donasi.create', kampanye)}>
-                        <PrimaryButton type='button' className='mt-4'>
-                            Donasi Sekarang
-                        </PrimaryButton>
-                    </Link>
-                </div>
-
         </div>
     </div>
     );

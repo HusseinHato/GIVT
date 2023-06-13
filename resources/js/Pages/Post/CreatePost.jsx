@@ -199,7 +199,7 @@ export default function Index({ auth, kampanyes }) {
                                 {data.gambar ? <button type='button' className='border border-white bg-slate-400' onClick={() => {reset("gambar")}}>Clear</button> : null}
                                 <InputError message={errors.gambar} className="mt-1" />
 
-                                {data.gambar &&  <img src={preview} /> }
+                                {data.gambar &&  <img src={preview} className='w-full h-56 md:h-96 rounded-md object-fill'/> }
                             </div>
 
                             <InputLabel

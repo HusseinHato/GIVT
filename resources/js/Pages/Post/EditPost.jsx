@@ -11,29 +11,31 @@ import { Editor } from '@tinymce/tinymce-react';
 import { useEffect, Fragment, useMemo, useCallback } from 'react';
 import TableBerita from '@/Components/TableBerita';
 import CardLink from '@/Components/CardLink';
+// import { router } from '@inertiajs/react'
 
 
 export default function Index({ kampanyes, berita }) {
 
   // const [selectedRow, setSelectedRow] = React.useState(null);
 
-  console.log(berita);
-
-    const { data, setData, patch, processing, reset, errors, transform, progress } = useForm({
+    const { data, setData, post, processing, reset, errors, transform, progress } = useForm({
         body: berita.body,
         judul: berita.judul,
-        // gambar: '',
-        kampanye_id: ''
+        gambar: '',
+        kampanye_id: '',
+        _method: 'post',
     });
 
     console.log(data);
+
+    // console.log(data);
     // console.log(kampanyes);
 
     const editorRef = useRef(null);
 
     const submit = (e) => {
         e.preventDefault();
-        patch(route('post.update', berita));
+        post(route('post.update', berita));
     };
 
     const onHandleChange = (event) => {
@@ -64,21 +66,21 @@ export default function Index({ kampanyes, berita }) {
         input.click();
     };
 
-    // const [preview, setPreview] = useState();
-    // console.log(preview);
+    const [preview, setPreview] = useState();
+    console.log(preview);
 
-    // useEffect(() => {
-    //     if (!data.gambar) {
-    //         setPreview(null)
-    //         return
-    //     }
+    useEffect(() => {
+        if (!data.gambar) {
+            setPreview(null)
+            return
+        }
 
-    //     const objectUrl = URL.createObjectURL(data.gambar)
-    //     setPreview(objectUrl)
+        const objectUrl = URL.createObjectURL(data.gambar)
+        setPreview(objectUrl)
 
-    //     // free memory when ever this component is unmounted
-    //     return () => URL.revokeObjectURL(objectUrl)
-    // }, [data.gambar]);
+        // free memory when ever this component is unmounted
+        return () => URL.revokeObjectURL(objectUrl)
+    }, [data.gambar]);
 
     const [judulKampanye, setJudulKampanye] = useState();
 
@@ -90,10 +92,6 @@ export default function Index({ kampanyes, berita }) {
             setJudulKampanye(selectedRows[0].judul);
         }
     }, []);
-
-    useEffect(() => {
-
-    }, [])
 
     const onRowClicked = (e) => {
         const selectedRows = gridRef.current.api.getSelectedRows();
@@ -117,7 +115,7 @@ export default function Index({ kampanyes, berita }) {
                         <form onSubmit={submit}>
                             <div>
                                 <InputLabel forInput="gambarnow" value="Gambar Berita" />
-                                <img src={"/storage/" + berita.gambar} id='gambarnow'/>
+                                <img src={"/storage/" + berita.gambar} id='gambarnow' className='w-full h-56 md:h-96 rounded-md object-fill'/>
                             </div>
 
                             <div>
@@ -183,7 +181,7 @@ export default function Index({ kampanyes, berita }) {
                                 <InputError message={errors.body} className="mt-1" />
                             </div>
 
-                            {/* <div>
+                            <div>
                                 <InputLabel
                                 forInput="gambar"
                                 value="Gambar Berita"
@@ -204,11 +202,11 @@ export default function Index({ kampanyes, berita }) {
                                         </div>
                                     </div>
                                 </FileUploader>
-                                {data.gambar ? <button type='button' className='border border-white bg-slate-400' onClick={() => {reset("gambar")}}>Clear</button> : null}
+                                {data.gambar ? <button type='button' className='border border-white bg-slate-400' onClick={() => {reset('gambar')}}>Clear</button> : null}
                                 <InputError message={errors.gambar} className="mt-1" />
 
-                                {data.gambar &&  <img src={preview} />}
-                            </div> */}
+                                {data.gambar &&  <img src={preview} className='w-full h-56 md:h-96 rounded-md object-fill'/>}
+                            </div>
 
                             <div className='mt-4'>
                                 <p className='text-black'>Kampanye Sekarang : {berita.kampanye.judul}</p>

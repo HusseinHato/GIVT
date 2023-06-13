@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class AdminAuthController extends Controller
 {
@@ -39,9 +40,13 @@ class AdminAuthController extends Controller
 
     public function adminLogout(Request $request)
     {
+        // dd($request);
         auth()->guard('admin')->logout();
-        Session::flush();
-        Session::put('success', 'You are logout sucessfully');
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
         return redirect(route('adminLogin'));
     }
 }

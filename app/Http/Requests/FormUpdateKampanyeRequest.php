@@ -22,10 +22,12 @@ class FormUpdateBeritaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'judul' => 'nullable|max:255|string|regex:/^[a-zA-Z0-9\s]+$/',
-            'gambar' => 'nullable|image|file',
-            'body' => 'nullable',
-            'kampanye_id' => 'nullable'
+            'deskripsi' => 'required',
+            'judul' => 'required|max:255|string|regex:/^[a-zA-Z0-9\s]+$/',
+            'target' => 'required|integer|gt:0',
+            'tgl_berakhir' => 'required|date',
+            'gambar' => 'required|image|file|max:1024',
+            'kategori' => 'required|string'
         ];
     }
 }

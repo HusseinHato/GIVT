@@ -6,9 +6,9 @@ import DonasiKampanye from '@/Components/DonasiKampanye';
 
 export default function Index({ auth, kampanye, posts, dana_terkumpul, donasis }) {
 
-    console.log(kampanye);
-    console.log(auth);
-    console.log(donasis);
+    // console.log(kampanye);
+    // console.log(auth);
+    // console.log(donasis);
 
     return (
         <AuthenticatedLayout auth={auth}>
@@ -31,8 +31,6 @@ export default function Index({ auth, kampanye, posts, dana_terkumpul, donasis }
 
                 }
             </div>
-
-
 
         </AuthenticatedLayout>
     );

@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from '@inertiajs/react';
 import differenceInDays from 'date-fns/differenceInDays';
 // import { Editor } from '@tinymce/tinymce-react';
+import PrimaryButton from './PrimaryButton';
 
 
 export default function Kampanye({ kampanye, show_url }) {
@@ -64,9 +65,12 @@ export default function Kampanye({ kampanye, show_url }) {
                                 Sisa Hari : {(days > 0) ? days + " Hari" : 'Selesai'}
                             </p>
                             <Link href={show_url}>
-                                <button type='button' className='mt-2 inline-block rounded bg-blue-500 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700 focus:ring focus:ring-blue-300 '>
+                                {/* <button type='button' className='mt-2 inline-block rounded bg-blue-500 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700 focus:ring focus:ring-blue-300 '>
                                     Selengkapnya
-                                </button>
+                                </button> */}
+                                <PrimaryButton>
+                                    Selengkapnya
+                                </PrimaryButton>
                             </Link>
                         </div>
                     </div>

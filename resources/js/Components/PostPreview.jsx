@@ -8,11 +8,19 @@ import {
     Button,
   } from "@material-tailwind/react";
 // import { Editor } from '@tinymce/tinymce-react';
+import PrimaryButton from './PrimaryButton';
 
 
 export default function PostPreview({ post }) {
 
     // console.log(new Date(post.created_at).toLocaleString());
+
+    const options = {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric"
+    }
 
     return (
         // <div className="flex flex-col justify-center">
@@ -36,7 +44,7 @@ export default function PostPreview({ post }) {
         // </div>
 
         <div className="container mx-auto">
-            <div style={{ backgroundColor: 'rgb(245 245 245)' }} className='rounded-md'>
+            <div className='rounded-md bg-white shadow-lg'>
                 <div className="space-y-4 md:grid md:grid-cols-3 md:items-start md:gap-2 md:space-y-0 rounded-md">
                     <div className="">
                         <img className="h-52 w-full rounded-md" src={"/storage/"+post.gambar} alt="Featured Photo"></img>
@@ -48,12 +56,15 @@ export default function PostPreview({ post }) {
                                 {post.excerpt}
                             </p>
                             <p className="mt-4 text-sm font-normal text-skin-base leading-5">
-                            {new Date(post.created_at).toLocaleString()}
+                            {new Date(post.created_at).toLocaleString("id-ID", options)}
                             </p>
                             <Link href={post.show_url}>
-                                <button type='button' className='inline-block rounded bg-blue-500 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700 focus:ring focus:ring-blue-300 '>
+                                {/* <button type='button' className='inline-block rounded bg-blue-500 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700 focus:ring focus:ring-blue-300 '>
                                     Selengkapnya
-                                </button>
+                                </button> */}
+                                <PrimaryButton>
+                                    Selengkapnya
+                                </PrimaryButton>
                             </Link>
                         </div>
                     </div>

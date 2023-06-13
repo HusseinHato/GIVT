@@ -25,18 +25,6 @@ export default function Dashboard(props) {
             </CardLink>
 
             <CardLink
-                href={route('post.index')}
-            >
-                Lihat Berita Saya
-            </CardLink>
-
-            <CardLink
-                href={route('post.create')}
-            >
-                Buat Berita
-            </CardLink>
-
-            <CardLink
                 href={route('donasi.index')}
             >
                 Lihat Riwayat Transaksi

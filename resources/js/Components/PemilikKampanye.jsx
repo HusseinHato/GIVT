@@ -58,7 +58,7 @@ export default function Kampanye({ kampanye, posts, dana_terkumpul }) {
                 <div className='clear-both'></div>
                 <p className="mt-4 text-lg text-black">Target : {numberFormat(kampanye.target)}</p>
                 <p className="mt-4 text-lg text-black">Dana Terkumpul : {numberFormat(dana_terkumpul)}</p>
-                <div className="h-1 w-full bg-neutral-200 rounded-md">
+                <div className="h-1 w-full bg-gray-200 rounded-md">
                         <div className="h-1 bg-blue-700 rounded-md" style={{ width: (((dana_terkumpul/kampanye.target)*100) < 100) ? (dana_terkumpul/kampanye.target)*100 +'%' : 100 +'%'}} ></div>
                 </div>
                 <p className="mt-4 text-lg text-black">Tgl Mulai : {new Date(kampanye.tgl_mulai).toLocaleString("id-ID", options)}</p>
@@ -75,23 +75,24 @@ export default function Kampanye({ kampanye, posts, dana_terkumpul }) {
                         })}
 
                         <Link href={route('kampanye.showbt', kampanye)}>
-                            <button type='button' className='inline-block rounded bg-blue-500 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700 focus:ring focus:ring-blue-300 mt-4'>
+                            {/* <button type='button' className='inline-block rounded bg-blue-500 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700 focus:ring focus:ring-blue-300 mt-4'>
                                 Berita Terkait Lainnya ...
-                            </button>
+                            </button> */}
+                            <PrimaryButton className='mt-4'>
+                                Berita Terkait Lainnya ...
+                            </PrimaryButton>
                         </Link>
 
                     </div>
                     : <p className='mt-4 text-lg text-black'>Belum Ada Berita Terkait Kampanye ...</p>
                 }
-                {auth.user && (auth.user.id != kampanye.user_id) &&
-                    <div>
-                        <Link href={route('donasi.create', kampanye)}>
-                            <PrimaryButton type='button' className='mt-4'>
-                                Donasi Sekarang
-                            </PrimaryButton>
-                        </Link>
-                    </div>
-                }
+
+                <Link href={route('kampanye.edit', kampanye)}>
+                    <PrimaryButton className='mt-4'>
+                        Edit
+                    </PrimaryButton>
+                </Link>
+
         </div>
     </div>
     );

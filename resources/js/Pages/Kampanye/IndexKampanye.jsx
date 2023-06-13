@@ -20,11 +20,13 @@ export default function Index({ auth, kampanyes, posts }) {
                     <>
                         <p className='text-lg text-gray-800'>Belum Ada kampanye ...</p>
 
+                        {!route().current("kampanye.diikuti") &&
                         <CardLink
                         href={route('kampanye.create')}
                         >
                             Buat Kampanye
                         </CardLink>
+                        }
                     </>
 
                     }

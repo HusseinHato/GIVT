@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from '@inertiajs/react';
 import differenceInDays from 'date-fns/differenceInDays';
+import PrimaryButton from './PrimaryButton';
 // import { Editor } from '@tinymce/tinymce-react';
 
 
@@ -49,7 +50,7 @@ export default function Kampanye({ kampanye }) {
         // </div>
 
         <div className="container mx-auto">
-            <div style={{ backgroundColor: 'rgb(245 245 245)' }} className='rounded-md'>
+            <div className='rounded-md shadow-lg bg-white'>
                 <div className="space-y-4 md:grid md:grid-cols-3 md:items-start md:gap-2 md:space-y-0 rounded-md">
                     <div className="">
                         <img className="h-72 w-full rounded-md" src={"/storage/"+kampanye.gambar} alt="Featured Photo"></img>
@@ -60,13 +61,13 @@ export default function Kampanye({ kampanye }) {
                             <p className="mt-4 text-md font-normal text-skin-base leading-5">
                                 Kategori : {kampanye.kategori}
                             </p>
-                            <p className="mt-4 text-md font-normal text-skin-base leading-5">
+                            <p className="mt-2 text-md font-normal text-skin-base leading-5">
                                 Dana Terkumpul : {numberFormat(kampanye.dana_terkumpul)}
                             </p>
-                            <p className="mt-4 text-md font-normal text-skin-base leading-5">
+                            <p className="mt-2 text-md font-normal text-skin-base leading-5">
                                 Target : {numberFormat(kampanye.target)}
                             </p>
-                            <div className="mt-2 h-1 w-full bg-neutral-200 rounded-md">
+                            <div className="mt-2 h-1 w-full bg-gray-200 rounded-md">
                                 <div className="h-1 bg-blue-700 rounded-md" style={{ width: (((kampanye.dana_terkumpul/kampanye.target)*100) < 100) ? (kampanye.dana_terkumpul/kampanye.target)*100 +'%' : 100 +'%'}} ></div>
                             </div>
                             <p className="mt-4 text-md font-normal text-skin-base leading-5">
@@ -74,9 +75,12 @@ export default function Kampanye({ kampanye }) {
                             </p>
                             <p>Terverifikasi : {kampanye.terverifikasi ? <span className='text-green-500'>Iya</span> : <span className='text-red-600'>Belum</span>}</p>
                             <Link href={kampanye.show_url}>
-                                <button type='button' className='mt-2 inline-block rounded bg-blue-500 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700 focus:ring focus:ring-blue-300 '>
+                                {/* <button type='button' className='mt-2 inline-block rounded bg-blue-500 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700 focus:ring focus:ring-blue-300 '>
                                     Selengkapnya
-                                </button>
+                                </button> */}
+                                <PrimaryButton>
+                                    Selengkapnya
+                                </PrimaryButton>
                             </Link>
                         </div>
                     </div>

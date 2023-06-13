@@ -14,7 +14,17 @@ import { Editor } from '@tinymce/tinymce-react';
 import { useEffect } from 'react';
 import Select from 'react-select'
 
-export default function Index({ auth }) {
+export default function Index({ auth, kampanye }) {
+
+    // console.log(kampanye);
+    // console.log(new Date(kampanye.tgl_mulai));
+
+    const optionsDate = {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric"
+    }
 
     const ButtonTglMulai = forwardRef(({ value, onClick }, ref) => (
         <button type='button' className="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900focus:outline-none focus:ring-2 focus:ring-indigo-500 transition ease-in-out duration-150" onClick={onClick} ref={ref}>
@@ -22,26 +32,25 @@ export default function Index({ auth }) {
         </button>
     ));
 
-    const [startDate] = useState(new Date());
+    const [startDate] = useState(new Date(kampanye.tgl_berakhir));
 
     const { data, setData, post, processing, reset, errors, transform, progress } = useForm({
-        deskripsi: '<p>Masukan Deskripsi Kampanye.</p>',
-        judul: '',
-        target: '',
+        deskripsi: kampanye.deskripsi,
+        judul: kampanye.judul,
+        target: kampanye.target,
+        // tgl_mulai: new Date(),
         tgl_berakhir: startDate,
-        tgl_mulai: new Date(),
         gambar: '',
-        kategori: ''
+        kategori: kampanye.kategori
     });
 
-    console.log(data);
+    // console.log(data);
 
     const editorRef = useRef(null);
 
     transform((data) => ({
         ...data,
         tgl_berakhir: data.tgl_berakhir.toISOString().slice(0, 19).replace('T', ' '),
-        tgl_mulai: data.tgl_mulai.toISOString().slice(0, 19).replace('T', ' '),
       }))
 
     const submit = (e) => {
@@ -103,6 +112,12 @@ export default function Index({ auth }) {
 
             <div className="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8 bg-gray-200">
                 <form onSubmit={submit}>
+
+                    <div>
+                        <InputLabel forInput="gambarnow" value="Gambar Sekarang" />
+                        <img src={"/storage/" + kampanye.gambar} id='gambarnow' className='w-full h-56 md:h-96 rounded-md object-fill'/>
+                    </div>
+
                     <div>
                         <InputLabel forInput="judul" value="Judul Kampanye" />
                         <TextInput
@@ -135,7 +150,7 @@ export default function Index({ auth }) {
 
                         <Editor
                             id='deskkampanye'
-                            tinymceScriptSrc={'../tinymce/tinymce.min.js'}
+                            tinymceScriptSrc={'../../tinymce/tinymce.min.js'}
                             onInit={(evt, editor) => editorRef.current = editor}
                             value={data.deskripsi}
                             onEditorChange={(newValue, editor) => setData('deskripsi', newValue)}
@@ -198,7 +213,7 @@ export default function Index({ auth }) {
                     </div>
 
                     <div>
-                    <InputLabel forInput="tgl_berakhir" value="Tanggal Akhir Kampanye" className="mt-4" />
+                    <InputLabel forInput="tgl_berakhir" value="Tanggal Berakhir Kampanye" className="mt-4" />
                         <DatePicker
                         id="tgl_berakhir"
                         selected={data.tgl_berakhir}
@@ -257,6 +272,7 @@ export default function Index({ auth }) {
                         isSearchable={false}
                         onChange={(e) => setData('kategori', e.value)}
                         placeholder='Pilih Kategori ...'
+                        defaultValue={{ value: kampanye.kategori, label: kampanye.kategori }}
                         />
 
                     <InputError message={errors.kategori} className="mt-1" />
@@ -290,7 +306,7 @@ export default function Index({ auth }) {
 
                     {/* jam berakhir kampanye sama dengan jam saat kampanye dibuat */}
 
-                    <PrimaryButton className="mt-4" disabled={processing}>Buat Kampanye</PrimaryButton>
+                    <PrimaryButton className="mt-4" disabled={processing}>Ubah Kampanye</PrimaryButton>
                 </form>
             </div>
         </AuthenticatedLayout>
