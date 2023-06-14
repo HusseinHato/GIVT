@@ -68,7 +68,7 @@ export default function Kampanye({ kampanye }) {
                                 Target : {numberFormat(kampanye.target)}
                             </p>
                             <div className="mt-2 h-1 w-full bg-gray-200 rounded-md">
-                                <div className="h-1 bg-blue-700 rounded-md" style={{ width: (((kampanye.dana_terkumpul/kampanye.target)*100) < 100) ? (kampanye.dana_terkumpul/kampanye.target)*100 +'%' : 100 +'%'}} ></div>
+                                <div className="h-1 bg-red-700 rounded-md" style={{ width: (((kampanye.dana_terkumpul/kampanye.target)*100) < 100) ? (kampanye.dana_terkumpul/kampanye.target)*100 +'%' : 100 +'%'}} ></div>
                             </div>
                             <p className="mt-4 text-md font-normal text-skin-base leading-5">
                                 Sisa Hari : {(days > 0) ? days + " Hari" : 'Selesai'}
@@ -78,7 +78,7 @@ export default function Kampanye({ kampanye }) {
                                 {/* <button type='button' className='mt-2 inline-block rounded bg-blue-500 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700 focus:ring focus:ring-blue-300 '>
                                     Selengkapnya
                                 </button> */}
-                                <PrimaryButton>
+                                <PrimaryButton className='mt-2'>
                                     Selengkapnya
                                 </PrimaryButton>
                             </Link>

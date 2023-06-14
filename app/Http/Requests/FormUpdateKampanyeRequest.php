@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class FormUpdateBeritaRequest extends FormRequest
+class FormUpdateKampanyeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,7 +26,7 @@ class FormUpdateBeritaRequest extends FormRequest
             'judul' => 'required|max:255|string|regex:/^[a-zA-Z0-9\s]+$/',
             'target' => 'required|integer|gt:0',
             'tgl_berakhir' => 'required|date',
-            'gambar' => 'required|image|file|max:1024',
+            'gambar' => 'nullable|image|file|max:1024',
             'kategori' => 'required|string'
         ];
     }

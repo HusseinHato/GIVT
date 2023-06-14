@@ -22,8 +22,8 @@ class AdminController extends Controller
             'totaldonasi' => Donasi::where('status', 'Paid')->sum('jumlah'),
             'userFreq' =>   User::withCount(['donasis as donasis_count' => function ($query) {
                                 $query->where('status', 'Paid');
-                            }])->orderBy('donasis_count', 'desc')->get(5),
-            'userMost' => User::withSum('donasis', 'jumlah')->orderByDesc('donasis_sum_jumlah')->get(5)
+                            }])->orderBy('donasis_count', 'desc')->limit(5)->get(),
+            'userMost' => User::withSum('donasis', 'jumlah')->orderByDesc('donasis_sum_jumlah')->limit(5)->get(5)
         ]);
     }
 }

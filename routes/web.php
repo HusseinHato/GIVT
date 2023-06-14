@@ -56,6 +56,7 @@ Route::middleware('redirectadmin')->group(function () {
         Route::get('/donasi', [DonasiController::class, 'index'])->name('donasi.index');
         Route::get('/kampanye/diikuti', [KampanyeController::class, 'kampdiikuti'])->name('kampanye.diikuti');
         Route::get('/kampanye/{kampanye:slug}/edit', [KampanyeController::class, 'edit'])->name('kampanye.edit');
+        Route::post('/kampanye/{kampanye:slug}/edit', [KampanyeController::class, 'update'])->name('kampanye.update');
     });
 
 
@@ -65,6 +66,12 @@ Route::middleware('redirectadmin')->group(function () {
     Route::get('/post/{post:slug}', [PostController::class, 'show'])->name('post.show.user');
     Route::get('/admin/login', [AdminAuthController::class, 'getLogin'])->name('adminLogin');
     Route::post('/admin/login', [AdminAuthController::class, 'postLogin'])->name('adminLoginPost');
+    Route::get('/semuakampanye', [KampanyeController::class, 'indexAll'])->name('kampanye.semua');
+    Route::get('/semuaberita', [PostController::class, 'indexAll'])->name('post.semua');
+    Route::post('/carikampanye', [KampanyeController::class, 'pencarian'])->name('kampanye.cari');
+    Route::get('/carikampanye', [KampanyeController::class, 'tampilkanpencarian'])->name('kampanye.hasilcari');
+    Route::get('/pendidikan', [KampanyeController::class, 'pendidikan'])->name('kampanye.pendidikan');
+    Route::get('/kemanusiaan', [KampanyeController::class, 'kemanusiaan'])->name('kampanye.kemanusiaan');
 
 });
 

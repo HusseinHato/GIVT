@@ -6,6 +6,8 @@ import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { Head, Link, useForm } from '@inertiajs/react';
+import SecondaryButton from '@/Components/SecondaryButton';
+import { Button } from '@material-tailwind/react';
 
 export default function Login({ status, canResetPassword }) {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -73,7 +75,7 @@ export default function Login({ status, canResetPassword }) {
                 <div className="block mt-4">
                     <label className="flex items-center">
                         <Checkbox name="remember" value={data.remember} handleChange={onHandleChange} />
-                        <span className="ml-2 text-sm text-gray-600">Remember me</span>
+                        <span className="ml-2 text-sm text-gray-900">Remember me</span>
                     </label>
                 </div>
 
@@ -81,9 +83,9 @@ export default function Login({ status, canResetPassword }) {
                     {canResetPassword && (
                         <Link
                             href={route('password.request')}
-                            className="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                            className="underline text-sm text-gray-900 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
                         >
-                            Forgot your password?
+                            Lupa Password?
                         </Link>
                     )}
 
@@ -94,9 +96,29 @@ export default function Login({ status, canResetPassword }) {
             </form>
 
             <div className='flex justify-center mt-4'>
-                <a href={route('google.login')} className="text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                    Google Sign in
+                <a href={route('google.login')}>
+                    {/* <SecondaryButton className='grow'>
+                        Google Sign in
+                    </SecondaryButton> */}
+
+                    <Button
+                    size="lg"
+                    variant="outlined"
+                    color="blue-gray"
+                    className="flex items-center gap-3"
+                    >
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/882px-Google_%22G%22_Logo.svg.png?20230305195327" alt="metamask" className="h-6 w-6" />
+                        Lanjutkan Dengan Google
+                    </Button>
                 </a>
+            </div>
+
+            <div className='flex justify-center mt-4'>
+                <Link href={route('register')}
+                className="underline text-sm text-gray-900 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                >
+                    Tidak Punya Akun ? Daftar Sekarang
+                </Link>
             </div>
 
         </GuestLayout>

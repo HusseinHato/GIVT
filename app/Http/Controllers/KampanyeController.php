@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use App\Models\Post;
 use App\Models\User;
+use App\Http\Requests\FormUpdateKampanyeRequest;
 
 
 class KampanyeController extends Controller
@@ -36,6 +37,135 @@ class KampanyeController extends Controller
             // }),
 
             'kampanyes' => Kampanye::with('user:id')->where('user_id', $userId)->get()->map(function($kampanye) {
+                return [
+                    'user_id' => $kampanye->user_id,
+                    'id' => $kampanye->id,
+                    'judul' => $kampanye->judul,
+                    'target' => $kampanye->target,
+                    'terverifikasi' => $kampanye->terverifikasi,
+                    'show_url' => route('kampanye.show', $kampanye),
+                    'tgl_berakhir' => $kampanye->tgl_berakhir,
+                    'gambar' => $kampanye->gambar,
+                    'kategori' => $kampanye->kategori,
+                    'dana_terkumpul' => $kampanye->donasis()->where('status', 'Paid')->sum('jumlah')
+                ];
+            })
+        ]);
+    }
+
+    public function indexAll(): Response
+    {
+        // $userId = Auth::id();
+        return Inertia::render('Kampanye/IndexAllKampanye', [
+
+            // 'kampanyes' => Kampanye::all()->map(function($kampanye) {
+            //     return [
+            //         'id' => $kampanye->id,
+            //         'judul' => $kampanye->judul,
+            //         'target' => $kampanye->target,
+            //         'terverifikasi' => $kampanye->terverifikasi,
+            //         'show_url' => route('kampanye.show', $kampanye),
+            //     ];
+            // }),
+
+            'kampanyes' => Kampanye::with('user')->where('terverifikasi', true)->get()->map(function($kampanye) {
+                return [
+                    'user_id' => $kampanye->user_id,
+                    'id' => $kampanye->id,
+                    'judul' => $kampanye->judul,
+                    'target' => $kampanye->target,
+                    'terverifikasi' => $kampanye->terverifikasi,
+                    'show_url' => route('kampanye.show', $kampanye),
+                    'tgl_berakhir' => $kampanye->tgl_berakhir,
+                    'gambar' => $kampanye->gambar,
+                    'kategori' => $kampanye->kategori,
+                    'dana_terkumpul' => $kampanye->donasis()->where('status', 'Paid')->sum('jumlah')
+                ];
+            })
+        ]);
+    }
+
+    public function pendidikan(): Response
+    {
+        // $userId = Auth::id();
+        return Inertia::render('Kampanye/IndexAllKampanye', [
+
+            'kampanyes' => Kampanye::with('user')->where('terverifikasi', true)->where('kategori', 'Pendidikan')->get()->map(function($kampanye) {
+                return [
+                    'user_id' => $kampanye->user_id,
+                    'id' => $kampanye->id,
+                    'judul' => $kampanye->judul,
+                    'target' => $kampanye->target,
+                    'terverifikasi' => $kampanye->terverifikasi,
+                    'show_url' => route('kampanye.show', $kampanye),
+                    'tgl_berakhir' => $kampanye->tgl_berakhir,
+                    'gambar' => $kampanye->gambar,
+                    'kategori' => $kampanye->kategori,
+                    'dana_terkumpul' => $kampanye->donasis()->where('status', 'Paid')->sum('jumlah')
+                ];
+            })
+        ]);
+    }
+
+    public function kemanusiaan(): Response
+    {
+        // $userId = Auth::id();
+        return Inertia::render('Kampanye/IndexAllKampanye', [
+
+            'kampanyes' => Kampanye::with('user')->where('terverifikasi', true)->where('kategori', 'Kemanusiaan')->get()->map(function($kampanye) {
+                return [
+                    'user_id' => $kampanye->user_id,
+                    'id' => $kampanye->id,
+                    'judul' => $kampanye->judul,
+                    'target' => $kampanye->target,
+                    'terverifikasi' => $kampanye->terverifikasi,
+                    'show_url' => route('kampanye.show', $kampanye),
+                    'tgl_berakhir' => $kampanye->tgl_berakhir,
+                    'gambar' => $kampanye->gambar,
+                    'kategori' => $kampanye->kategori,
+                    'dana_terkumpul' => $kampanye->donasis()->where('status', 'Paid')->sum('jumlah')
+                ];
+            })
+        ]);
+    }
+
+    // public function tampilkanpencarian(Kampanye $kampanye): Response
+    // {
+    //     // $userId = Auth::id();
+    //     return Inertia::render('Kampanye/IndexAllKampanye', [
+
+    //         'kampanyes' => $kampanye->map(function($kampanye) {
+    //             return [
+    //                 'user_id' => $kampanye->user_id,
+    //                 'id' => $kampanye->id,
+    //                 'judul' => $kampanye->judul,
+    //                 'target' => $kampanye->target,
+    //                 'terverifikasi' => $kampanye->terverifikasi,
+    //                 'show_url' => route('kampanye.show', $kampanye),
+    //                 'tgl_berakhir' => $kampanye->tgl_berakhir,
+    //                 'gambar' => $kampanye->gambar,
+    //                 'kategori' => $kampanye->kategori,
+    //                 'dana_terkumpul' => $kampanye->donasis()->where('status', 'Paid')->sum('jumlah')
+    //             ];
+    //         })
+    //     ]);
+    // }
+
+    public function pencarian(Request $request)
+    {
+        // $userId = Auth::id();
+
+        // dd($request);
+
+        $pencarian = $request->search;
+
+        $kampanyes = Kampanye::where('judul', 'like', '%'.$pencarian.'%')->where('terverifikasi', true)->get();
+
+        // return redirect(route('kampanye.hasilcari', $pencarian));
+
+        return Inertia::render('Kampanye/IndexAllKampanye', [
+
+            'kampanyes' => $kampanyes->map(function($kampanye) {
                 return [
                     'user_id' => $kampanye->user_id,
                     'id' => $kampanye->id,
@@ -125,7 +255,7 @@ class KampanyeController extends Controller
         $request->user()->kampanyes()->create($validated);
 
 
-        return redirect(route('kampanye.index'));
+        return redirect(route('kampanye.index'))->with('message','Kampanye Berhasil dibuat');
     }
 
     /**
@@ -144,7 +274,7 @@ class KampanyeController extends Controller
                     'user_name' => $post->admin->name,
                     'judul' => $post->judul,
                     'gambar' => $post->gambar,
-                    'excerpt' => $post->createExcerpt($post->body, 100),
+                    'excerpt' => $post->createExcerpt($post->body, 35),
                     'show_url' => route('post.show.user', $post),
                     'created_at' => $post->created_at
                 ];
@@ -186,7 +316,7 @@ class KampanyeController extends Controller
                     'user_name' => $post->admin->name,
                     'judul' => $post->judul,
                     'gambar' => $post->gambar,
-                    'excerpt' => $post->createExcerpt($post->body, 100),
+                    'excerpt' => $post->createExcerpt($post->body, 35),
                     'show_url' => route('post.show.user', $post),
                     'created_at' => $post->created_at
                 ];
@@ -197,7 +327,7 @@ class KampanyeController extends Controller
     public function kampdiikuti(): Response
     {
         $user = Auth::user();
-        return Inertia::render('Kampanye/IndexKampanye', [
+        return Inertia::render('Kampanye/IndexAllKampanye', [
 
             // 'kampanyes' => Kampanye::all()->map(function($kampanye) {
             //     return [
@@ -240,10 +370,34 @@ class KampanyeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Kampanye $kampanye): RedirectResponse
+    public function update(FormUpdateKampanyeRequest $request, Kampanye $kampanye): RedirectResponse
     {
         //
-        
+        $validated = $request->validated();
+
+        // dd($validated);
+
+        // $validated['gambar'] = $request->file('gambar')->store('gambar-kampanye');
+
+        $kampanye->judul = $validated['judul'];
+
+        $kampanye->deskripsi = $validated['deskripsi'];
+
+        $kampanye->target = $validated['target'];
+
+        $kampanye->tgl_berakhir = $validated['tgl_berakhir'];
+
+        $kampanye->kategori = $validated['kategori'];
+
+        if ($validated['gambar']){
+            $validated['gambar'] = $request->file('gambar')->store('gambar-kampanye');
+
+            $kampanye->gambar = $validated['gambar'];
+        }
+
+        $kampanye->save();
+
+        return redirect(route('kampanye.index'))->with('message', 'Kampanye Berhasil diubah');
     }
 
     public function konfirmasi(Request $request, Kampanye $kampanye): RedirectResponse

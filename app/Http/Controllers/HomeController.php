@@ -7,28 +7,19 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Response;
 use Inertia\Inertia;
 use App\Models\Kampanye;
+use App\Models\Post;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
-    private function createExcerpt($content, $length) {
-        // Strip all HTML tags
-        $content = preg_replace('/[\x00-\x1F\x7F-\xFF]/', '', strip_tags($content));
-
-        // Limit the excerpt to the specified length
-        $excerpt = Str::limit($content, $length);
-
-        return $excerpt;
-    }
-
     //
     public function index()
     {
         return Inertia::render('Welcome', [
             'canLogin' => Route::has('login'),
             'canRegister' => Route::has('register'),
-            'kampanyes' => Kampanye::with('user')->where('terverifikasi', true)->get()->map(function($kampanye) {
+            'kampanyes' => Kampanye::with('user')->where('terverifikasi', true)->limit(3)->get()->map(function($kampanye) {
                 return [
                     'user_id' => $kampanye->user_id,
                     'id' => $kampanye->id,
@@ -40,6 +31,15 @@ class HomeController extends Controller
                     'gambar' => $kampanye->gambar,
                     'kategori' => $kampanye->kategori,
                     'dana_terkumpul' => $kampanye->donasis()->where('status', 'Paid')->sum('jumlah'),
+                ];
+            }),
+            'posts' => Post::latest()->limit(3)->get()->map(function($post) {
+                return [
+                    'judul' => $post->judul,
+                    'gambar' => $post->gambar,
+                    'excerpt' => $post->createExcerpt($post->body, 35),
+                    'show_url' => route('post.show.user', $post),
+                    'created_at' => $post->created_at,
                 ];
             })
         ]);

@@ -34,9 +34,32 @@ class PostController extends Controller
                     'user_id' => $post->admin_id,
                     'judul' => $post->judul,
                     'gambar' => $post->gambar,
-                    'excerpt' => $post->createExcerpt($post->body, 100),
+                    'excerpt' => $post->createExcerpt($post->body, 35),
                     'show_url' => route('post.show', $post),
                     'edit_url' => route('post.edit', $post),
+                    // 'delete_url' => route('post.delete', $post),
+                    'created_at' => $post->created_at,
+                    'slug' => $post->slug
+                ];
+            })
+        ]);
+    }
+
+    public function indexAll(): Response
+    {
+        //
+        // $userId = Auth::guard('admin')->user()->id;
+        // dd();
+        return Inertia::render('Post/IndexAllPost', [
+            'posts' => Post::with('admin')->get()->map(function($post) {
+                return [
+                    'id' => $post->id,
+                    'user_id' => $post->admin_id,
+                    'judul' => $post->judul,
+                    'gambar' => $post->gambar,
+                    'excerpt' => $post->createExcerpt($post->body, 35),
+                    'show_url' => route('post.show.user', $post),
+                    // 'edit_url' => route('post.edit', $post),
                     // 'delete_url' => route('post.delete', $post),
                     'created_at' => $post->created_at,
                     'slug' => $post->slug
@@ -82,7 +105,7 @@ class PostController extends Controller
 
         $request->user('admin')->posts()->create($validated);
 
-        return redirect(route('post.index'));
+        return redirect(route('post.index'))->with('message', 'Berita Berhasil dibuat');
     }
 
     /**
@@ -163,7 +186,7 @@ class PostController extends Controller
 
         $post->save();
 
-        return redirect(route('post.index'));
+        return redirect(route('post.index'))->with('message', 'Berita Berhasil diubah');
     }
 
     /**

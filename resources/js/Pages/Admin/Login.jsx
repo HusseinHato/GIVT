@@ -11,7 +11,7 @@ import {
 } from "@material-tailwind/react";
 // import { Link } from "@inertiajs/react";
 import { Head, useForm, usePage } from '@inertiajs/react';
-import { useEffect } from 'react';
+import { useEffect, useState, Fragment } from 'react';
 import InputError from '@/Components/InputError';
 
 export default function SignIn() {
@@ -39,11 +39,13 @@ export default function SignIn() {
         post(route('adminLoginPost'));
     };
 
+    const [open, setOpen] = useState(true);
+
     // console.log(status);
 
     const { flash } = usePage().props
 
-    console.log(flash);
+    // console.log(flash);
 
   return (
     <>
@@ -51,9 +53,13 @@ export default function SignIn() {
 
       <div className="absolute inset-0 z-0 h-full w-full bg-black/20" />
       <div className="container mx-auto p-4">
-        {flash.message && (
-            <Alert color="blue">{flash.message}</Alert>
-        )}
+                {flash.message &&
+                    <Fragment>
+                        <Alert open={open} onClose={() => setOpen(false)} color="red">
+                            {flash.message}
+                        </Alert>
+                    </Fragment>
+                }
         <form>
             <Card className="absolute top-2/4 left-2/4 w-full max-w-[24rem] -translate-y-2/4 -translate-x-2/4">
             <CardHeader

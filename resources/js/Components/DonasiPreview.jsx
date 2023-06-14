@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from '@inertiajs/react';
 import differenceInDays from 'date-fns/differenceInDays';
+import PrimaryButton from './PrimaryButton';
 // import { Editor } from '@tinymce/tinymce-react';
 
 
@@ -19,7 +20,7 @@ export default function Donasi({ donasi }) {
 
     return (
         <div className="container mx-auto">
-        <div style={{ backgroundColor: 'rgb(245 245 245)' }} className='rounded-md'>
+        <div className='rounded-md bg-white shadow-lg'>
             <div className="space-y-4 md:grid md:grid-cols-3 md:items-start md:gap-2 md:space-y-0 rounded-md">
                 <div className="">
                     <img className="h-72 w-full rounded-md" src={"/storage/"+donasi.gambar} alt="Featured Photo"></img>
@@ -37,9 +38,9 @@ export default function Donasi({ donasi }) {
                             Status : {donasi.status}
                         </p>
                         <Link href={donasi.show_url}>
-                            <button type='button' className='inline-block rounded bg-blue-500 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700 focus:ring focus:ring-blue-300 mt-4'>
+                            <PrimaryButton>
                                 Selengkapnya
-                            </button>
+                            </PrimaryButton>
                         </Link>
                     </div>
                 </div>

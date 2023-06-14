@@ -5,6 +5,7 @@ import PostPreview from '@/Components/PostPreview'
 import { Link } from '@inertiajs/react';
 import PrimaryButton from './PrimaryButton';
 import { usePage } from '@inertiajs/react';
+import SecondaryButton from './SecondaryButton';
 
 
 export default function Kampanye({ kampanye, posts, dana_terkumpul }) {
@@ -27,11 +28,10 @@ export default function Kampanye({ kampanye, posts, dana_terkumpul }) {
     )
 
     return (
-    <div class="max-w-3xl px-4 pt-6 lg:pt-10 pb-12 sm:px-6 lg:px-8 mx-auto">
-        <div className="p-6 bg-white rounded-md">
+    <div class="max-w-4xl px-4 pt-6 lg:pt-10 pb-12 sm:px-6 lg:px-8 mx-auto">
+        <div className="p-6 bg-white shadow-lg rounded-md">
                 <img src={"/storage/"+kampanye.gambar} alt="" className='w-full h-48 md:h-96 rounded-md object-fill'/>
                 <h1 className="mt-4 text-6xl text-black">{kampanye.judul}</h1>
-                <p className="mt-4 text-lg text-black">Gambar Header :</p>
                 <p className="mt-4 text-lg text-black">Deskripsi : </p>
                 <div>
                     <Editor
@@ -51,8 +51,8 @@ export default function Kampanye({ kampanye, posts, dana_terkumpul }) {
                 <div className='clear-both'></div>
                 <p className="mt-4 text-lg text-black">Target : {numberFormat(kampanye.target)}</p>
                 <p className="mt-4 text-lg text-black">Dana Terkumpul : {numberFormat(dana_terkumpul)}</p>
-                <div className="h-1 w-full bg-neutral-200 rounded-md">
-                        <div className="h-1 bg-blue-700 rounded-md" style={{ width: (((dana_terkumpul/kampanye.target)*100) < 100) ? (dana_terkumpul/kampanye.target)*100 +'%' : 100 +'%'}} ></div>
+                <div className="h-1 w-full bg-gray-200 rounded-md">
+                        <div className="h-1 bg-red-700 rounded-md" style={{ width: (((dana_terkumpul/kampanye.target)*100) < 100) ? (dana_terkumpul/kampanye.target)*100 +'%' : 100 +'%'}} ></div>
                 </div>
                 {/* <p className="mt-4 text-lg text-black">Tgl Mulai : {new Date(kampanye.tgl_mulai).toLocaleString()}</p> */}
                 {/* <p className="mt-4 text-lg text-black">Tgl Berakhir : {new Date(kampanye.tgl_berakhir).toLocaleString()}</p> */}
@@ -70,22 +70,25 @@ export default function Kampanye({ kampanye, posts, dana_terkumpul }) {
                             {/* <button type='button' className='inline-block rounded bg-blue-500 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700 focus:ring focus:ring-blue-300 mt-4'>
                                 Berita Terkait Lainnya ...
                             </button> */}
-                            <PrimaryButton className='mt-4'>
+                            <SecondaryButton className='mt-4'>
                                 Berita Terkait Lainnya ...
-                            </PrimaryButton>
+                            </SecondaryButton>
                         </Link>
 
                     </div>
                     : <p className='mt-4 text-lg text-black'>Belum Ada Berita Terkait Kampanye ...</p>
                 }
 
-                <div>
-                    <Link href={route('donasi.create', kampanye)}>
-                        <PrimaryButton type='button' className='mt-4'>
-                            Donasi Sekarang
-                        </PrimaryButton>
-                    </Link>
-                </div>
+                {
+                    auth.user &&
+                    <div>
+                        <Link href={route('donasi.create', kampanye)}>
+                            <PrimaryButton type='button' className='mt-4'>
+                                Donasi Sekarang
+                            </PrimaryButton>
+                        </Link>
+                    </div>
+                }
 
         </div>
     </div>

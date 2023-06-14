@@ -35,9 +35,9 @@ export default function NavbarAdmin({ setShowSideNav }) {
     >
       <div className="flex flex-row xl:flex-col-reverse gap-6 justify-end">
         <div className="flex items-center">
-          <div className="mr-2 md:mr-4 md:w-56">
+          {/* <div className="mr-2 md:mr-4 md:w-56">
             <Input label="Type here" />
-          </div>
+          </div> */}
           <IconButton
             variant="text"
             color="blue-gray"
@@ -68,7 +68,7 @@ export default function NavbarAdmin({ setShowSideNav }) {
           >
             <Cog6ToothIcon className="h-5 w-5 text-blue-gray-500" />
           </IconButton> */}
-          <Menu>
+          {/* <Menu>
             <MenuHandler>
               <IconButton variant="text" color="blue-gray">
                 <BellIcon className="h-5 w-5 text-blue-gray-500" />
@@ -145,7 +145,7 @@ export default function NavbarAdmin({ setShowSideNav }) {
                 </div>
               </MenuItem>
             </MenuList>
-          </Menu>
+          </Menu> */}
         </div>
       </div>
     </Navbar>

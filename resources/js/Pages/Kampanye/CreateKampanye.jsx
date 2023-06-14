@@ -101,7 +101,7 @@ export default function Index({ auth }) {
         <AuthenticatedLayout auth={auth}>
             <Head title="Kampanye" />
 
-            <div className="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8 bg-gray-200">
+            <div className="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8 bg-white shadow-lg">
                 <form onSubmit={submit}>
                     <div>
                         <InputLabel forInput="judul" value="Judul Kampanye" />
@@ -188,7 +188,7 @@ export default function Index({ auth }) {
                             onValueChange={(values) => {
                                 setData('target', values.value)
                             }}
-                            className="focus:border-indigo-500 focus:ring-indigo-500 rounded-l-none rounded-md shadow-sm"
+                            className="focus:border-red-500 focus:ring-red-500 rounded-l-none rounded-md shadow-sm"
                             // isFocused={true}
                             autoComplete="off"
                             placeholder = "Target Dana ..."
@@ -276,7 +276,7 @@ export default function Index({ auth }) {
                         hoverTitle=" "
 
                         >
-                            <div className='bg-white grid place-content-center h-48 rounded-lg'>
+                            <div className='bg-white grid place-content-center h-48 rounded-lg border border-red-500'>
                                 <div>
                                     <p>{data.gambar ? `File ${data.gambar.name}` : `Unggah / Tarik File Kesini`}</p>
                                 </div>

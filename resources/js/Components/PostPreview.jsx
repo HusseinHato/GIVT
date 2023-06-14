@@ -62,7 +62,7 @@ export default function PostPreview({ post }) {
                                 {/* <button type='button' className='inline-block rounded bg-blue-500 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700 focus:ring focus:ring-blue-300 '>
                                     Selengkapnya
                                 </button> */}
-                                <PrimaryButton>
+                                <PrimaryButton className='mt-2'>
                                     Selengkapnya
                                 </PrimaryButton>
                             </Link>

@@ -9,8 +9,10 @@ import {
     DialogHeader,
     DialogBody,
     DialogFooter,
+    Alert
   } from "@material-tailwind/react";
 import { router } from "@inertiajs/react";
+import { usePage } from "@inertiajs/react";
 
 function LihatBerita({ posts }) {
     // console.log(route().current());
@@ -33,9 +35,23 @@ function LihatBerita({ posts }) {
         setConfirmOpen(false)
     })
 
+    const [open, setOpen] = useState(true);
+
+    const { flash } = usePage().props
+
+    console.log(flash.message);
+
   return (
     <>
         <Head title="Index Berita" />
+
+        {flash.message &&
+            <Fragment>
+                <Alert open={open} onClose={() => setOpen(false)} color="green">
+                    {flash.message}
+                </Alert>
+            </Fragment>
+        }
 
         <Fragment>
             <Dialog open={confirmOpen} handler={handleOpen}>

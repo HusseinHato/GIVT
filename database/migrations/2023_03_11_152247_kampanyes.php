@@ -24,6 +24,7 @@ return new class extends Migration
             $table->mediumText('deskripsi');
             $table->boolean('terverifikasi')->default(false);
             $table->string('slug')->unique();
+            $table->boolean('aktif')->default(true);
         });
     }
 

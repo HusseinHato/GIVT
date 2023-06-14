@@ -13,7 +13,7 @@ function IndexDonasi({ donasis }) {
                         </div>
             }) :
             <>
-                <p className='text-lg text-gray-800'>Belum Ada Donasi ...</p>
+                <p className='text-lg text-gray-800 mt-4'>Belum Ada Donasi ...</p>
             </>
         }
     </>

@@ -51,14 +51,14 @@ export default function Index({ auth, kampanye }) {
         <AuthenticatedLayout auth={auth}>
             <Head title="Donasi" />
 
-            <div className="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8 bg-gray-200">
+            <div className="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8 bg-white rounded-md shadow-lg">
                 <form onSubmit={submit}>
 
                 <div>
                     <InputLabel forInput="jumlah" value="Jumlah Donasi"/>
                         <div className="flex flex-wrap items-stretch w-full relative mt-1">
 			                <div className="flex -mr-px">
-				                <span className="flex items-center leading-normal bg-white rounded rounded-r-none border border-r-0 border-grey-light px-3 whitespace-no-wrap text-grey-dark text-sm">Rp</span>
+				                <span className="flex items-center leading-normal bg-white rounded rounded-r-none border border-r-0 border-gray-900 px-3 whitespace-no-wrap text-black text-sm">Rp</span>
 			                </div>
                             <div className='grow'>
                                 <NumericFormat
@@ -70,7 +70,7 @@ export default function Index({ auth, kampanye }) {
                                 onValueChange={(values) => {
                                     setData('jumlah', values.value)
                                 }}
-                                className="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-l-none rounded-md shadow-sm w-full"
+                                className="border-gray-900 focus:border-red-500 focus:ring-red-500 rounded-l-none rounded-md shadow-sm w-full"
                                 // isFocused={true}
                                 autoComplete="off"
                                 placeholder = "Jumlah Donasi ..."
@@ -83,10 +83,10 @@ export default function Index({ auth, kampanye }) {
 
                     <div>
                         <InputLabel forInput="nama" value="Nama Donatur" className="mt-4"/>
-                        <p className='mt-1 text-gray-700 text-2xl'>
+                        <p className='mt-1 text-gray-900 text-2xl'>
                             {auth.user.name}
                         </p>
-                        <p className='mt-1 text-gray-700 text-sm'>
+                        <p className='mt-1 text-gray-900 text-sm'>
                             {auth.user.email}
                         </p>
                         <div className="block mt-3">
@@ -96,7 +96,7 @@ export default function Index({ auth, kampanye }) {
                                     setAnonim(!anonim);
                                   }}
                                 />
-                                <span className="ml-2 text-lg text-gray-700">Donasi Secara Anonim</span>
+                                <span className="ml-2 text-lg text-gray-900">Donasi Secara Anonim</span>
                             </label>
                         </div>
                     </div>
@@ -110,7 +110,7 @@ export default function Index({ auth, kampanye }) {
                         <textarea
                             value={data.doa}
                             placeholder="Masukkan Doa ..."
-                            className="block w-full h-36 border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 resize-none"
+                            className="block w-full h-36 border-gray-300 focus:border-red-500 focus:ring focus:ring-red-400 focus:ring-opacity-50 rounded-md shadow-sm mt-1 resize-none"
                             onChange={e => setData('doa', e.target.value)}
                             id="doa"
                         ></textarea>

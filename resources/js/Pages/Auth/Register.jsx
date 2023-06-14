@@ -5,6 +5,7 @@ import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { Head, Link, useForm } from '@inertiajs/react';
+import { Button } from '@material-tailwind/react';
 
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -105,9 +106,9 @@ export default function Register() {
                 <div className="flex items-center justify-end mt-4">
                     <Link
                         href={route('login')}
-                        className="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                        className="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
                     >
-                        Already registered?
+                        Sudah Punya Akun?
                     </Link>
 
                     <PrimaryButton className="ml-4" processing={processing}>
@@ -116,9 +117,23 @@ export default function Register() {
                 </div>
             </form>
 
-            <a href={route('google.login')} class="text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                Google Sign in
-            </a>
+            <div className='flex justify-center mt-4'>
+                <a href={route('google.login')}>
+                    {/* <SecondaryButton className='grow'>
+                        Google Sign in
+                    </SecondaryButton> */}
+
+                    <Button
+                    size="lg"
+                    variant="outlined"
+                    color="blue-gray"
+                    className="flex items-center gap-3"
+                    >
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/882px-Google_%22G%22_Logo.svg.png?20230305195327" alt="metamask" className="h-6 w-6" />
+                        Lanjutkan Dengan Google
+                    </Button>
+                </a>
+            </div>
         </GuestLayout>
     );
 }

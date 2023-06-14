@@ -5,6 +5,7 @@ import PostPreview from '@/Components/PostPreview'
 import { Link } from '@inertiajs/react';
 import PrimaryButton from './PrimaryButton';
 import { usePage } from '@inertiajs/react';
+import SecondaryButton from './SecondaryButton';
 
 
 export default function Kampanye({ kampanye, posts, dana_terkumpul }) {
@@ -34,8 +35,8 @@ export default function Kampanye({ kampanye, posts, dana_terkumpul }) {
     }
 
     return (
-    <div class="max-w-3xl px-4 pt-6 lg:pt-10 pb-12 sm:px-6 lg:px-8 mx-auto">
-        <div className="p-6 space-x-2 bg-white rounded-md">
+    <div class="max-w-4xl px-4 pt-6 lg:pt-10 pb-12 sm:px-6 lg:px-8 mx-auto">
+        <div className="p-6 space-x-2 bg-white rounded-md shadow-lg">
                 <img src={"/storage/"+kampanye.gambar} alt="" className='w-full h-48 md:h-96 rounded-md object-fill'/>
                 <h1 className="mt-4 text-6xl text-black">{kampanye.judul}</h1>
                 <p className="mt-4 text-lg text-black">Gambar Header :</p>
@@ -78,9 +79,9 @@ export default function Kampanye({ kampanye, posts, dana_terkumpul }) {
                             {/* <button type='button' className='inline-block rounded bg-blue-500 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700 focus:ring focus:ring-blue-300 mt-4'>
                                 Berita Terkait Lainnya ...
                             </button> */}
-                            <PrimaryButton className='mt-4'>
+                            <SecondaryButton className='mt-4'>
                                 Berita Terkait Lainnya ...
-                            </PrimaryButton>
+                            </SecondaryButton>
                         </Link>
 
                     </div>

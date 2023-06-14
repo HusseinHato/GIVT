@@ -1,0 +1,60 @@
+import { a as jsx, j as jsxs } from "../ssr.mjs";
+import { A as Authenticated } from "./AuthenticatedLayout-a2b93657.mjs";
+import "react";
+import { Editor } from "@tinymce/tinymce-react";
+import { Head } from "@inertiajs/react";
+import { K as Kampanye } from "./KampanyePreviewPost-27c9f68a.mjs";
+import "react/jsx-runtime";
+import "react-dom/server";
+import "@inertiajs/react/server";
+import "./ApplicationLogo-107c42b0.mjs";
+import "./Dropdown-633d2380.mjs";
+import "@headlessui/react";
+import "./PrimaryButton-96f9bcc8.mjs";
+import "date-fns/differenceInDays";
+function Post({ post, show_url }) {
+  console.log(post);
+  const options = {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric"
+  };
+  return /* @__PURE__ */ jsx("div", { className: "max-w-3xl px-4 pt-6 lg:pt-10 pb-12 sm:px-6 lg:px-8 mx-auto", children: /* @__PURE__ */ jsxs("div", { className: "p-6 bg-white rounded-md", children: [
+    /* @__PURE__ */ jsx("img", { src: "/storage/" + post.gambar, alt: "", className: "w-full h-56 md:h-96 rounded-md object-fill" }),
+    /* @__PURE__ */ jsx("h1", { className: "mt-4 text-6xl text-black", children: post.judul }),
+    /* @__PURE__ */ jsx("p", { className: "mt-2 text-md text-black", children: new Date(post.created_at).toLocaleString("id-ID", options) }),
+    /* @__PURE__ */ jsxs("p", { className: "mt-1 text-md text-black", children: [
+      "Dibuat Oleh : ",
+      post.admin.name
+    ] }),
+    /* @__PURE__ */ jsx("div", { className: "mt-4", children: /* @__PURE__ */ jsx(
+      Editor,
+      {
+        tinymceScriptSrc: "../tinymce/tinymce.min.js",
+        initialValue: post.body,
+        disabled: true,
+        init: {
+          toolbar: false,
+          statusbar: false,
+          menubar: false,
+          readonly: true,
+          plugins: "autoresize",
+          content_css: "default"
+        }
+      }
+    ) }),
+    /* @__PURE__ */ jsx("p", { className: "mt-4 text-lg text-black", children: "Kampanye Terkait : " }),
+    /* @__PURE__ */ jsx(Kampanye, { kampanye: post.kampanye, show_url })
+  ] }) });
+}
+function Index({ auth, post, show_url }) {
+  console.log(post);
+  return /* @__PURE__ */ jsxs(Authenticated, { auth, children: [
+    /* @__PURE__ */ jsx(Head, { title: "Berita" }),
+    /* @__PURE__ */ jsx(Post, { post, show_url })
+  ] });
+}
+export {
+  Index as default
+};

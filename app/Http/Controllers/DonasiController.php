@@ -67,6 +67,10 @@ class DonasiController extends Controller
             return redirect(route('kampanye.show', $kampanye));
         }
 
+        if(!$kampanye->aktif){ 
+            return redirect(route('kampanye.show', $kampanye));
+        }
+
         return Inertia::render('Donasi/CreateDonasi', [
             //
             'kampanye' => $kampanye

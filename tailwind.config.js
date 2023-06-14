@@ -17,6 +17,7 @@ module.exports = withMT({
         extend: {
             fontFamily: {
                 sans: ['Nunito', ...defaultTheme.fontFamily.sans],
+                serif: ['Caladea', ...defaultTheme.fontFamily.serif]
             },
         },
     },

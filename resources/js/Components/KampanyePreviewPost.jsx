@@ -50,7 +50,7 @@ export default function Kampanye({ kampanye, show_url }) {
         // </div>
 
         <div className="container mx-auto">
-            <div style={{ backgroundColor: 'rgb(245 245 245)' }} className='rounded-md'>
+            <div className='rounded-md bg-white shadow-lg'>
                 <div className="space-y-4 md:grid md:grid-cols-3 md:items-start md:gap-2 md:space-y-0 rounded-md">
                     <div className="">
                         <img className="h-52 w-full rounded-md" src={"/storage/"+kampanye.gambar} alt="Featured Photo"></img>
@@ -68,7 +68,7 @@ export default function Kampanye({ kampanye, show_url }) {
                                 {/* <button type='button' className='mt-2 inline-block rounded bg-blue-500 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white hover:bg-blue-700 focus:ring focus:ring-blue-300 '>
                                     Selengkapnya
                                 </button> */}
-                                <PrimaryButton>
+                                <PrimaryButton className='mt-2'>
                                     Selengkapnya
                                 </PrimaryButton>
                             </Link>
